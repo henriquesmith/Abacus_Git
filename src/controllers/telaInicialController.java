@@ -39,7 +39,6 @@ public class telaInicialController {
     }
     
     private void init() {
-        
         tela.getBtnAbaco().addActionListener(e -> metodoIterativo());
         tela.getBtnConfig().addActionListener(e -> lancarCoeficientes());
         tela.getBtnProp().addActionListener(e -> lancarMateriais());
@@ -139,7 +138,7 @@ public class telaInicialController {
     }
     
     private void metodoIterativo() {
-        abacoViewController avc = new abacoViewController(parent,this.secaoTransversal,this.esforcosCalculo,this.materiais);
+        viewAbacoController avc = new viewAbacoController(parent,this.secaoTransversal,this.esforcosCalculo,this.materiais);
     }
 
     /**

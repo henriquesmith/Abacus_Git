@@ -8,6 +8,7 @@ package views;
 import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
 /**
@@ -43,7 +44,6 @@ public class abacoView extends javax.swing.JPanel {
     public JTextField getTxtTaxa() {
         return this.txtTaxa;
     }
-
     public JTextField getTxtNormal() {
         return this.txtNormal;
     }
@@ -180,7 +180,7 @@ public class abacoView extends javax.swing.JPanel {
                     .addComponent(txtNormal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnEnvoltoria)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel6);

@@ -4,22 +4,18 @@
  * and open the template in the editor.
  */
 package entites;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import views.progressDialog;
 
 /**
  *
  * @author Administrador
  */
-public class NeutralLine {
+public class NeutralLine  {
 
-    JFrame parent;
-    progressDialog PD;
+    private progressDialog PD;
     private final secaoTransversal secRecebida;
     private secaoTransversal secT = null;
     private final Esforcos esfRecebidos;
@@ -28,7 +24,7 @@ public class NeutralLine {
     private float dLim = 0;
     private float defLim = 0;
     private float lambda = 0;
-    private static int prog = 0;
+    private JFrame parent;
 
     public NeutralLine(JFrame parent, secaoTransversal secEntrada, Esforcos esfEntrada, Materials matEntrada) {
         this.parent = parent;
@@ -39,7 +35,6 @@ public class NeutralLine {
         this.dLim = (this.matRecebido.getConcrete().getDeformacaoEu() / (this.matRecebido.getConcrete().getDeformacaoEu() + 10));
         this.defLim = ((this.matRecebido.getAco().getFyd() / 10) / (this.matRecebido.getAco().getEcs() / 10));
         this.lambda = this.matRecebido.getConcrete().getLambda();
-
     }
 
     public List<Esforcos> FC_N_ENV(float Nd, float atb, float alfa1) {
@@ -53,38 +48,8 @@ public class NeutralLine {
         return moR;
     }
 
-    //Metodo que retorna a envoltória e momentos resistentes de acordo com uma determinada area de aço e Esforco normal
-    public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd) {
-        float a;
-        List<Esforcos> moR = new ArrayList<>();
-        a = a1;
-        float b;
-        b = a2;
-        float ln;
-        PD = new progressDialog(parent);
-        PD.setMaximum((int) b);
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-                PD.setVisible(true);
-                }
-        });
-        for (float i = a; i < b; i++) {
-
-            ln = bissecant(0, 1000, i, atb, Nd);
-            moR.add(moments(ln, i, atb));
-            prog = (int) i;
-            PD.setValue(prog);
-            PD.setVisible(true);
-
-        }
-
-        return moR;
-    }
-
-    private Esforcos moments(float x0, float alfa, float atb) {
+    public Esforcos moments(float x0, float alfa, float atb) {
         secaoTransversal secRotate;
         dominiosDeformacao domi;
         Esforcos Resistentes;
@@ -92,7 +57,7 @@ public class NeutralLine {
         secaoTransversal secVCC;
         secaoTransversal secUnrot;
         Vertice staticsMoments;
-        secRotate = rotate(this.secT, alfa);
+        secRotate = rotate(this.getSecT(), alfa);
         //mudei aqui
         domi = verifyDomain(x0, secRotate.getD(), secRotate.getH());
         deformacao(domi, secRotate, x0);
@@ -100,12 +65,12 @@ public class NeutralLine {
         Acc = secVCC.getArea();//cm²
         secUnrot = Unrotate(secVCC, alfa);
         staticsMoments = staticsMomentos(secUnrot);
-        Resistentes = equacoesEquilibrio(Acc, this.matRecebido, staticsMoments, atb, secRotate, this.secT);
+        Resistentes = equacoesEquilibrio(Acc, this.getMatRecebido(), staticsMoments, atb, secRotate, this.getSecT());
         return Resistentes;
     }
 // metodo da bissecant pr encontar a profundidade da lina neutra de acordo com um angulo alfa
 
-    private float bissecant(float a, float b, float angulo, float atb, float Nd) {
+    public float bissecant(float a, float b, float angulo, float atb, float Nd) {
         float xLn;
         float e0 = a;
         float eu = b;
@@ -156,7 +121,7 @@ public class NeutralLine {
         secaoTransversal secUnrot;
         Vertice staticsMoments;
 
-        secRotate = rotate(this.secT, alfa);
+        secRotate = rotate(this.getSecT(), alfa);
         //mudei aqui em baixo
         domi = verifyDomain(x0, secRotate.getD(), secRotate.getH());
         deformacao(domi, secRotate, x0);
@@ -164,7 +129,7 @@ public class NeutralLine {
         Acc = secVCC.getArea();//cm²
         secUnrot = Unrotate(secVCC, alfa);
         staticsMoments = staticsMomentos(secUnrot);
-        Resistentes = equacoesEquilibrio(Acc, this.matRecebido, staticsMoments, areaTotalBars, secRotate, this.secT);
+        Resistentes = equacoesEquilibrio(Acc, this.getMatRecebido(), staticsMoments, areaTotalBars, secRotate, this.getSecT());
         f_x = capacidadeResistente(Resistentes, Nd);
         System.out.println("F(" + x0 + ")= " + f_x);
         return f_x;
@@ -335,9 +300,9 @@ public class NeutralLine {
         float xLn = x0;
         float d = secRot.getD();
         float h = secRot.getH();
-        float eu = this.matRecebido.getConcrete().getDeformacaoEu();
-        float e0 = this.matRecebido.getConcrete().getDeformacaoE0();
-        float k = this.matRecebido.getConcrete().getK();
+        float eu = this.getMatRecebido().getConcrete().getDeformacaoEu();
+        float e0 = this.getMatRecebido().getConcrete().getDeformacaoE0();
+        float k = this.getMatRecebido().getConcrete().getK();
         float esi;
         for (int i = 0; i < secRot.getBars().getBarras().size(); i++) {
             float di = secRot.getBars().getBarras().get(i).getDi();
@@ -356,7 +321,7 @@ public class NeutralLine {
                 secRot.getBars().getBarras().get(i).setDefbarra(esi);
                 System.out.println("deformacao: " + secRot.getBars().getBarras().get(i).getDefbarra());
             }
-            tensao(secRot.getBars().getBarras().get(i), this.matRecebido.getAco().getFyd(), this.matRecebido.getAco().getEcs());
+            tensao(secRot.getBars().getBarras().get(i), this.getMatRecebido().getAco().getFyd(), this.getMatRecebido().getAco().getEcs());
         }
 
     }
@@ -454,9 +419,32 @@ public class NeutralLine {
     }
 
     /**
-     * @return the prog
+     * @return the secT
      */
-    public int getProg() {
-        return prog;
+    public secaoTransversal getSecT() {
+        return secT;
     }
+
+    /**
+     * @return the esfRecebidos
+     */
+    public Esforcos getEsfRecebidos() {
+        return esfRecebidos;
+    }
+
+    /**
+     * @return the matRecebido
+     */
+    public Materials getMatRecebido() {
+        return matRecebido;
+    }
+
+    /**
+     * @return the secRecebida
+     */
+    public secaoTransversal getSecRecebida() {
+        return secRecebida;
+    }
+
+    
 }

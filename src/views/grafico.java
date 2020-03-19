@@ -29,7 +29,7 @@ public class grafico {
     XYChart chart;
 
     public XChartPanel grafico(String Mx, String My) {
-        chart = new XYChartBuilder().width(600).height(600).theme(Styler.ChartTheme.XChart).title("Envoltória").xAxisTitle(Mx).yAxisTitle(My).build();
+        chart = new XYChartBuilder().width(590).height(590).theme(Styler.ChartTheme.Matlab).title("Envoltória").xAxisTitle(Mx).yAxisTitle(My).build();
         chart.getStyler().setPlotBackgroundColor(ChartColor.getAWTColor(ChartColor.WHITE));
         chart.getStyler().setPlotGridLinesColor(new Color(0, 0, 0));
         chart.getStyler().setChartBackgroundColor(Color.WHITE);
@@ -41,16 +41,14 @@ public class grafico {
         chart.getStyler().setChartTitleBoxBorderColor(Color.black);
         chart.getStyler().setPlotGridLinesVisible(true);
         chart.getStyler().setAxisTickMarkLength(5);
-        chart.getStyler().setPlotMargin(10);
+        chart.getStyler().setPlotMargin(5);
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
         chart.getStyler().setLegendVisible(true);
         chart.getStyler().setToolTipsEnabled(true);
         chart.getStyler().setToolTipsAlwaysVisible(false);
         chart.getStyler().setPlotContentSize(1);
-        chart.getStyler().setXAxisTitleVisible(false);
         panel = new XChartPanel(chart);
-        panel.setPreferredSize(new Dimension(600,600));
-        panel.setAutoscrolls(true);
+      //  panel.setAutoscrolls(true);
         return panel;
     }
 

@@ -5,14 +5,14 @@
  */
 package views;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,33 +20,31 @@ import javax.swing.SwingUtilities;
  */
 public class progressDialog extends JDialog {
 
-    private JButton btn_cancel;
+    private JButton btn_Cancel;
     private JProgressBar progressBar;
 
     public progressDialog(Window parent) {
-        super(parent, "Processando...", ModalityType.APPLICATION_MODAL);
-        
-
-        btn_cancel = new JButton("Cancelar");
+        super(parent, "Progresso", ModalityType.APPLICATION_MODAL);
+        btn_Cancel = new JButton("Cancelar");
         progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
-        Dimension size = btn_cancel.getPreferredSize();
+        progressBar.setForeground(Color.green);
+        setLayout(new FlowLayout());
+        Dimension size = btn_Cancel.getPreferredSize();
         size.width = 400;
         progressBar.setPreferredSize(size);
-        setLayout(new FlowLayout());
         add(progressBar);
-        add(btn_cancel);
+        add(btn_Cancel);
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         pack();
         setLocationRelativeTo(parent);
-        
     }
 
-    public void setMaximum(int value) {
-        this.progressBar.setMaximum(value);
+    public void setMax(int maxValue) {
+        progressBar.setMaximum(maxValue);
     }
 
     public void setValue(int value) {
-        this.progressBar.setValue(value);
+        progressBar.setValue(value);
     }
-
 }

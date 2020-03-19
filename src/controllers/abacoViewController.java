@@ -11,16 +11,15 @@ import entites.NeutralLine;
 import entites.secaoTransversal;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import views.abacoView;
 import views.grafico;
 import views.progressDialog;
@@ -31,7 +30,7 @@ import views.progressDialog;
  */
 public class abacoViewController {
 
-    progressDialog progress;
+    progressDialog pd;
     secaoTransversal sec;
     Esforcos esf;
     Materials mat;
@@ -39,6 +38,7 @@ public class abacoViewController {
     private JFrame frame;
     private JFrame parent = null;
     private float taxaArm, NormalReduzida;
+    private int count;
 
     public abacoViewController(JFrame parent, secaoTransversal sec, Esforcos esf, Materials mat) {
         this.sec = sec;
@@ -46,8 +46,70 @@ public class abacoViewController {
         this.mat = mat;
         this.parent = parent;
         this.view = new abacoView();
+        pd = new progressDialog(this.frame);
         taxa();
         init();
+    }
+
+    private void gerarEnv(float atb, float nd) throws ExecutionException {
+        NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esf, this.mat);
+        grafico graf = new grafico();
+        view.getJPanelEnvoltoria().setLayout(new BorderLayout());
+        view.getJPanelEnvoltoria().add(graf.grafico("Mxdr (kN/m)", "Mydr (kN/m)"), BorderLayout.CENTER);
+        view.getJPanelEnvoltoria().validate();
+        CardLayout cl = (CardLayout) view.getJPChart().getLayout();
+        cl.show(view.getJPChart(), "env");
+        List<Esforcos> es = new ArrayList<>();
+        List<Float> N = new ArrayList<>();
+        List<Float> Mx = new ArrayList<>();
+        List<Float> My = new ArrayList<>();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                pd.setVisible(true);
+            }
+        });
+
+        SwingWorker<List<Esforcos>, Integer> worker = new SwingWorker<List<Esforcos>, Integer>() {
+
+            @Override
+            protected List<Esforcos> doInBackground() throws Exception {
+                float xLn;
+                for (float i = 0; i < 360; i++) {
+                    xLn = ln.bissecant(0, 1000, i, atb, nd);
+                    es.add(ln.moments(xLn, i, atb));
+                }
+                es.stream().map((e) -> {
+                    Mx.add(e.getMxk());
+                    return e;
+                }).forEach((e) -> {
+                    My.add(e.getMyk());
+                });
+                grafico graf = new grafico();
+                view.getJPanelEnvoltoria().setLayout(new BorderLayout());
+                view.getJPanelEnvoltoria().add(graf.grafico("Mxdr (kN/m)", "Mydr (kN/m)"), BorderLayout.CENTER);
+                view.getJPanelEnvoltoria().validate();
+                CardLayout cl = (CardLayout) view.getJPChart().getLayout();
+                cl.show(view.getJPChart(), "env");
+                graf.setSeries(Mx, My, taxaArm);
+
+                return es;
+            }
+
+            @Override
+            protected void process(List<Integer> count) {
+                int c = count.get(count.size() - 1);
+                pd.setValue(c);
+            }
+
+            @Override
+            protected void done() {
+                pd.setVisible(false);
+            }
+        };
+        worker.execute();
+
     }
 
     private void taxa() {
@@ -64,8 +126,22 @@ public class abacoViewController {
     }
 
     private void init() {
-        view.getBtnGerar().addActionListener(e -> gerar());
-        view.getBtnEnvoltoria().addActionListener(e -> envoltoria());
+        view.getBtnGerar().addActionListener(e -> {
+            try {
+                gerarEnv(this.sec.getBars().getAreaBars(), this.esf.getNk());
+            } catch (ExecutionException ex) {
+                Logger.getLogger(abacoViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+        view.getBtnEnvoltoria().addActionListener(e -> {
+            try {
+                envoltoria();
+            } catch (ExecutionException ex) {
+                Logger.getLogger(abacoViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
         view.getJPanelEnvoltoria().validate();
         //testes
         CardLayout cl = (CardLayout) view.getJPChart().getLayout();
@@ -81,22 +157,33 @@ public class abacoViewController {
         frame.setVisible(true);
 
     }
-//  arrumar metodo
+// metodo teste
 
-    private void envoltoria() {
+    private void envoltoria() throws ExecutionException {
         grafico graf = new grafico();
         view.getJPanelEnvoltoria().setLayout(new BorderLayout());
-        view.getJPanelEnvoltoria().add(graf.grafico("Mxdr (kN/m)", "Mydr (kN/m)"),BorderLayout.CENTER);
+        view.getJPanelEnvoltoria().add(graf.grafico("Mxdr (kN/m)", "Mydr (kN/m)"), BorderLayout.CENTER);
         view.getJPanelEnvoltoria().validate();
         CardLayout cl = (CardLayout) view.getJPChart().getLayout();
         cl.show(view.getJPChart(), "env");
-        List< Esforcos> es;
-        List<Float> N = new ArrayList<>();
-        List<Float> Mx = new ArrayList<>();
-        List<Float> My = new ArrayList<>();
-        NeutralLine LN = new NeutralLine(this.frame,this.sec, this.esf, this.mat);
+        //List< Esforcos> es;
+        // List<Float> N = new ArrayList<>();
+        // List<Float> Mx = new ArrayList<>();
+        // List<Float> My = new ArrayList<>();
+        NeutralLine LN = new NeutralLine(this.frame, this.sec, this.esf, this.mat);
         if (this.esf.getMxk() != 0 && this.esf.getMyk() != 0) {
-            es = LN.envoltoria(0, 360, this.sec.getBars().getAreaBars(), this.esf.getNk());
+            // for (Esforcos e : es) {
+            //    Mx.add(e.getMxk());
+            //     My.add(e.getMyk());
+            //      }
+            ///     graf.setEspacamento(50);
+            //    graf.setSeries(Mx, My, this.taxaArm);
+            
+            List< Esforcos> es = null;
+            List<Float> N = new ArrayList<>();
+            List<Float> Mx = new ArrayList<>();
+            List<Float> My = new ArrayList<>();
+           // es = LN.envoltoria(0, 360, this.sec.getBars().getAreaBars(), this.esf.getNk());
             for (Esforcos e : es) {
                 Mx.add(e.getMxk());
                 My.add(e.getMyk());
@@ -104,24 +191,19 @@ public class abacoViewController {
             graf.setEspacamento(50);
             graf.setSeries(Mx, My, this.taxaArm);
         } else {
-            es = LN.FC_N_ENV(this.esf.getNk(), this.sec.getBars().getAreaBars(), 0);
-            for (Esforcos e : es) {
-                My.add(e.getMyk());
-                N.add(e.getNk());
-            }
-            graf.setSeries(My, N, taxaArm);
+
         }
 
     }
 
-    private void gerar() {
+    // metodo teste
+    private void gerar() throws ExecutionException {
         grafico graf = new grafico();
-
         view.getJPanelEnvoltoria().add(graf.grafico("μx", "μy"), BorderLayout.CENTER);
         view.getJPanelEnvoltoria().validate();
         CardLayout cl = (CardLayout) view.getJPChart().getLayout();
         cl.show(view.getJPChart(), "env");
-        NeutralLine LN = new NeutralLine(this.parent,this.sec, this.esf, this.mat);
+        NeutralLine LN = new NeutralLine(this.frame, this.sec, this.esf, this.mat);
         float deltaw = (float) 0.2;
         float ac = this.sec.getArea();
         float fyd = this.mat.getAco().getFyd() / 10;
@@ -136,11 +218,11 @@ public class abacoViewController {
         float hy = this.sec.getH();
         for (float k = w1; k <= w2; k = k + deltaw) {
             float As = ((k * ac * sigma) / fyd) * 100;
-            List< Esforcos> es;
+            List< Esforcos> es = null;
             List<Float> Nr = new ArrayList<>();
             List<Float> Mx = new ArrayList<>();
             List<Float> My = new ArrayList<>();
-            es = LN.envoltoria(0, 360, As, N);
+           // es = LN.envoltoria(0, 360, As, N);
             for (int i = 0; i < es.size(); i++) {
                 float mx = es.get(i).getMxk();
                 float my = es.get(i).getMyk();
@@ -172,5 +254,12 @@ public class abacoViewController {
      */
     public float getNormalReduzida() {
         return NormalReduzida;
+    }
+
+    /**
+     * @return the count
+     */
+    public int getCount() {
+        return count;
     }
 }
