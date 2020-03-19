@@ -5,10 +5,12 @@
  */
 package views;
 
+import entites.Esforcos;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
@@ -41,14 +43,15 @@ public class grafico {
         chart.getStyler().setChartTitleBoxBorderColor(Color.black);
         chart.getStyler().setPlotGridLinesVisible(true);
         chart.getStyler().setAxisTickMarkLength(5);
-        chart.getStyler().setPlotMargin(5);
+        chart.getStyler().setPlotMargin(0);
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
         chart.getStyler().setLegendVisible(true);
         chart.getStyler().setToolTipsEnabled(true);
         chart.getStyler().setToolTipsAlwaysVisible(false);
+
         chart.getStyler().setPlotContentSize(1);
         panel = new XChartPanel(chart);
-      //  panel.setAutoscrolls(true);
+        //  panel.setAutoscrolls(true);
         return panel;
     }
 
@@ -56,6 +59,32 @@ public class grafico {
         chart.getStyler().setYAxisTickMarkSpacingHint((int) p);
         chart.getStyler().setXAxisTickMarkSpacingHint((int) p);
 
+    }
+
+    public void setSeriesMap(Map<Float, List<Esforcos>> map, float ac, float hx, float hy, float sigma) {
+        Set<Float> keys = map.keySet();
+        for (Float k :keys) {
+            List<Esforcos> es = map.get(k);
+            List<Float> Mx = new ArrayList<>();
+            List<Float> My = new ArrayList<>();
+            for (int i=0; i< es.size(); i++) {
+                float mx = es.get(i).getMxk();
+                float my = es.get(i).getMyk();
+                mx = (((mx * 100)) / (ac * hx * sigma));
+                my = (((my * 100)) / (ac * hy * sigma));
+                Mx.add(mx);
+                My.add(my);
+            }
+           
+            serie = chart.addSeries("ω = " + String.format("%.2f", k), Mx, My);
+            serie.setMarker(SeriesMarkers.NONE);
+            serie.setLineStyle(SeriesLines.SOLID);
+            serie.setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+            serie.setLabel("ω = " + String.format("%.2f", k));
+
+        }
+        panel.revalidate();
+        panel.repaint();
     }
 
     public void setAxis() {

@@ -41,10 +41,17 @@ public class progressDialog extends JDialog {
     }
 
     public void setMax(int maxValue) {
-        progressBar.setMaximum(maxValue);
+        getProgressBar().setMaximum(maxValue);
     }
 
     public void setValue(int value) {
-        progressBar.setValue(value);
+        getProgressBar().setValue(value);
+    }
+
+    /**
+     * @return the progressBar
+     */
+    public JProgressBar getProgressBar() {
+        return progressBar;
     }
 }

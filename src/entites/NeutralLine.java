@@ -47,7 +47,20 @@ public class NeutralLine  {
         }
         return moR;
     }
-
+ public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd) {
+        float a;
+        List<Esforcos> moR = new ArrayList<>();
+        a = a1;
+        float b;
+        b = a2;
+        float ln;
+        for (float i = a; i < b; i++) {
+            ln = bissecant(0, 1000, i, atb, Nd);
+            moR.add(moments(ln, i, atb));
+           
+        }
+         return moR;
+ }
 
     public Esforcos moments(float x0, float alfa, float atb) {
         secaoTransversal secRotate;
@@ -92,7 +105,7 @@ public class NeutralLine  {
         float f_e1;
         float p;
         f_e1 = comecar(e1, angulo, atb, Nd);
-        while (Math.abs(f_e1) > (float) 0.001) {
+        while (Math.abs(f_e1) > (float) 0.0015) {
             p = (f_0 * f_e1);
             if (p > 0) {
                 e0 = e1;

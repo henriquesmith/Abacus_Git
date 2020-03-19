@@ -160,39 +160,7 @@ public class abacoViewController {
 // metodo teste
 
     private void envoltoria() throws ExecutionException {
-        grafico graf = new grafico();
-        view.getJPanelEnvoltoria().setLayout(new BorderLayout());
-        view.getJPanelEnvoltoria().add(graf.grafico("Mxdr (kN/m)", "Mydr (kN/m)"), BorderLayout.CENTER);
-        view.getJPanelEnvoltoria().validate();
-        CardLayout cl = (CardLayout) view.getJPChart().getLayout();
-        cl.show(view.getJPChart(), "env");
-        //List< Esforcos> es;
-        // List<Float> N = new ArrayList<>();
-        // List<Float> Mx = new ArrayList<>();
-        // List<Float> My = new ArrayList<>();
-        NeutralLine LN = new NeutralLine(this.frame, this.sec, this.esf, this.mat);
-        if (this.esf.getMxk() != 0 && this.esf.getMyk() != 0) {
-            // for (Esforcos e : es) {
-            //    Mx.add(e.getMxk());
-            //     My.add(e.getMyk());
-            //      }
-            ///     graf.setEspacamento(50);
-            //    graf.setSeries(Mx, My, this.taxaArm);
-            
-            List< Esforcos> es = null;
-            List<Float> N = new ArrayList<>();
-            List<Float> Mx = new ArrayList<>();
-            List<Float> My = new ArrayList<>();
-           // es = LN.envoltoria(0, 360, this.sec.getBars().getAreaBars(), this.esf.getNk());
-            for (Esforcos e : es) {
-                Mx.add(e.getMxk());
-                My.add(e.getMyk());
-            }
-            graf.setEspacamento(50);
-            graf.setSeries(Mx, My, this.taxaArm);
-        } else {
 
-        }
 
     }
 
@@ -222,7 +190,7 @@ public class abacoViewController {
             List<Float> Nr = new ArrayList<>();
             List<Float> Mx = new ArrayList<>();
             List<Float> My = new ArrayList<>();
-           // es = LN.envoltoria(0, 360, As, N);
+           es = LN.envoltoria(0, 360, As, N);
             for (int i = 0; i < es.size(); i++) {
                 float mx = es.get(i).getMxk();
                 float my = es.get(i).getMyk();
