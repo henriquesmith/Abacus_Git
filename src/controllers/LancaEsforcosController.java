@@ -69,20 +69,21 @@ public class LancaEsforcosController {
             ey = (my / nk) * 100;
             view.getTxtEx().setText(String.format("%.2f", ex));
             view.getTxtEy().setText(String.format("%.2f", ey));
-            if (JOptionPane.showConfirmDialog(frame, view.getJPanelE()) == JOptionPane.OK_OPTION);
-            esforcos = new Esforcos(mx, my, nk);
-            frame.setVisible(false);
-            parent.setVisible(true);
+            if (JOptionPane.showConfirmDialog(frame, view.getJPanelE()) == JOptionPane.OK_OPTION) {
+                esforcos = new Esforcos(mx, my, nk);
+                frame.setVisible(false);
+                parent.setVisible(true);
+            }
         } else {
             JOptionPane.showMessageDialog(frame, "A normal deve ser um valor diferente de zero!");
-        }
-
+        
     }
+}
 
-    /**
-     * @return the esforcos
-     */
-    public Esforcos getEsforcos() {
+/**
+ * @return the esforcos
+ */
+public Esforcos getEsforcos() {
         return esforcos;
     }
 }

@@ -30,13 +30,13 @@ public class grafico {
     XYSeries serie;
     XYChart chart;
 
-    public XChartPanel grafico(String Mx, String My) {
-        chart = new XYChartBuilder().width(590).height(590).theme(Styler.ChartTheme.Matlab).title("Envoltória").xAxisTitle(Mx).yAxisTitle(My).build();
+    public XChartPanel grafico(String Mx, String My, String title) {
+        chart = new XYChartBuilder().width(590).height(590).theme(Styler.ChartTheme.Matlab).title(title).xAxisTitle(Mx).yAxisTitle(My).build();
         chart.getStyler().setPlotBackgroundColor(ChartColor.getAWTColor(ChartColor.WHITE));
         chart.getStyler().setPlotGridLinesColor(new Color(0, 0, 0));
         chart.getStyler().setChartBackgroundColor(Color.WHITE);
         chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideSE);
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideE);
         chart.getStyler().setChartFontColor(Color.black);
         chart.getStyler().setChartTitleBoxBackgroundColor(Color.white);
         chart.getStyler().setChartTitleBoxVisible(false);
@@ -48,10 +48,9 @@ public class grafico {
         chart.getStyler().setLegendVisible(true);
         chart.getStyler().setToolTipsEnabled(true);
         chart.getStyler().setToolTipsAlwaysVisible(false);
-
-        chart.getStyler().setPlotContentSize(1);
+        chart.getStyler().setPlotContentSize(0.9);
         panel = new XChartPanel(chart);
-        //  panel.setAutoscrolls(true);
+        panel.setAutoscrolls(true);
         return panel;
     }
 
@@ -61,22 +60,49 @@ public class grafico {
 
     }
 
-    public void setSeriesMap(Map<Float, List<Esforcos>> map, float ac, float hx, float hy, float sigma) {
+    public void setPoint(List<Float> Mx, List<Float> My) {
+        serie = chart.addSeries("Esforcos solicitantes", My, My);
+        serie.setMarkerColor(Color.RED);
+        serie.setMarker(SeriesMarkers.DIAMOND);
+        serie.setLineStyle(SeriesLines.NONE);
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    public void setSeriesMap(Map<Float, List<Esforcos>> map, float ac, float hx, float hy, float sigma, double tetaD) {
         Set<Float> keys = map.keySet();
-        for (Float k :keys) {
+        for (Float k : keys) {
             List<Esforcos> es = map.get(k);
             List<Float> Mx = new ArrayList<>();
             List<Float> My = new ArrayList<>();
-            for (int i=0; i< es.size(); i++) {
+            List<Float> N = new ArrayList<>();
+            for (int i = 0; i < es.size(); i++) {
                 float mx = es.get(i).getMxk();
                 float my = es.get(i).getMyk();
+                float nd = es.get(i).getNk();
                 mx = (((mx * 100)) / (ac * hx * sigma));
                 my = (((my * 100)) / (ac * hy * sigma));
+                nd = ((nd) / (ac * sigma));
                 Mx.add(mx);
                 My.add(my);
+                N.add(nd);
             }
-           
-            serie = chart.addSeries("ω = " + String.format("%.2f", k), Mx, My);
+            if (tetaD != 90 && tetaD != 0) {
+                serie = chart.addSeries("ω = " + String.format("%.2f", k), Mx, My);
+                chart.setXAxisTitle("μx");
+                chart.setYAxisTitle("μy");
+                
+            }
+            if (tetaD == 90) {
+                serie = chart.addSeries("ω = " + String.format("%.2f", k), N, My);
+                chart.setXAxisTitle("v");
+                chart.setYAxisTitle("μ");
+            }
+            if (tetaD == 0) {
+                serie = chart.addSeries("ω = " + String.format("%.2f", k), N, Mx);
+                chart.setXAxisTitle("v");
+                chart.setYAxisTitle("μ");
+            }
             serie.setMarker(SeriesMarkers.NONE);
             serie.setLineStyle(SeriesLines.SOLID);
             serie.setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);

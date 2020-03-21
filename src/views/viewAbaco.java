@@ -28,6 +28,14 @@ public class viewAbaco extends javax.swing.JPanel {
         return new Dimension(1000, 600);
     }
 
+    public JTextField getTxtUxS() {
+        return this.txtUxS;
+    }
+
+    public JTextField getTxtUyS() {
+        return this.txtUyS;
+    }
+
     public JTextField getTxtVarV() {
         return this.txtvarV;
     }
@@ -69,6 +77,46 @@ public class viewAbaco extends javax.swing.JPanel {
         return this.jPanelAbaco;
     }
 
+    public JButton getBtnDim() {
+        return this.btnDim;
+    }
+
+    public JTextField getTxtInclinacao() {
+        return this.txtInclinacao;
+    }
+
+    public JTextField getTxtProfundidade() {
+        return this.txtProfundidade;
+    }
+
+    public JPanel getJPanelN_X() {
+        return this.JPEnvN_X;
+    }
+
+    public JButton getBtnFCN_X() {
+        return this.btnFCN_X;
+    }
+
+    public JTextField getTxtFcn_v1() {
+        return this.txtFcn_v1;
+    }
+
+    public JTextField getTxtFcn_v2() {
+        return this.txtFcn_V2;
+    }
+
+    public JTextField getTxtFcn_w1() {
+        return this.txtFcn_w1;
+    }
+
+    public JTextField getTxtFcn_w2() {
+        return this.txtFcn_w2;
+    }
+
+    public JButton getBtnFcn_Go() {
+        return this.btn_FCN_GO;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,6 +134,10 @@ public class viewAbaco extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtTaxa = new javax.swing.JTextField();
         btnEnvoltoria = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        txtUxS = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtUyS = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtvarV = new javax.swing.JTextField();
@@ -95,12 +147,32 @@ public class viewAbaco extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         txtW2 = new javax.swing.JTextField();
         btnAbaco = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        txtFcn_v1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtFcn_V2 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txtFcn_w1 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txtFcn_w2 = new javax.swing.JTextField();
+        btn_FCN_GO = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        btnDim = new javax.swing.JButton();
+        txtProfundidade = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtInclinacao = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        btnFCN_X = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanelGraficos = new javax.swing.JPanel();
         jPanelInicial = new javax.swing.JPanel();
         jPanelAbaco = new javax.swing.JPanel();
         jPEnvoltoria = new javax.swing.JPanel();
+        JPEnvN_X = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(1000, 600));
         setLayout(new java.awt.BorderLayout());
@@ -127,7 +199,24 @@ public class viewAbaco extends javax.swing.JPanel {
         txtTaxa.setMinimumSize(new java.awt.Dimension(50, 24));
         txtTaxa.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        btnEnvoltoria.setText("Gerar envoltória");
+        btnEnvoltoria.setText("Gerar");
+        btnEnvoltoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnvoltoriaActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Mxd,s:");
+
+        txtUxS.setEditable(false);
+        txtUxS.setMinimumSize(new java.awt.Dimension(46, 24));
+        txtUxS.setPreferredSize(new java.awt.Dimension(46, 24));
+
+        jLabel10.setText("Myd,s:");
+
+        txtUyS.setEditable(false);
+        txtUyS.setMinimumSize(new java.awt.Dimension(46, 24));
+        txtUyS.setPreferredSize(new java.awt.Dimension(46, 24));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -136,19 +225,27 @@ public class viewAbaco extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtV, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(btnEnvoltoria)
-                .addGap(34, 34, 34))
+                        .addComponent(txtTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUxS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUyS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEnvoltoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(25, 25, 25))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,14 +258,23 @@ public class viewAbaco extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                .addComponent(btnEnvoltoria)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtUxS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtUyS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnEnvoltoria, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new java.awt.GridBagConstraints());
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Abaco"));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Abaco FCO"));
         jPanel4.setMinimumSize(new java.awt.Dimension(195, 195));
         jPanel4.setPreferredSize(new java.awt.Dimension(195, 195));
 
@@ -194,6 +300,68 @@ public class viewAbaco extends javax.swing.JPanel {
 
         btnAbaco.setText("GO");
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("FCN"));
+
+        jLabel11.setText("v:");
+
+        jLabel12.setText("a");
+
+        jLabel13.setText("w:");
+
+        jLabel14.setText("a");
+
+        btn_FCN_GO.setText("GO");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(txtFcn_v1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFcn_V2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(txtFcn_w1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_FCN_GO)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFcn_V2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel12)
+                        .addComponent(txtFcn_v1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFcn_w1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(4, 4, 4))))
+            .addComponent(btn_FCN_GO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -216,7 +384,8 @@ public class viewAbaco extends javax.swing.JPanel {
                         .addComponent(txtW2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addComponent(btnAbaco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,16 +394,18 @@ public class viewAbaco extends javax.swing.JPanel {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtvarV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtW1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(txtW2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAbaco))
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -246,15 +417,55 @@ public class viewAbaco extends javax.swing.JPanel {
         jPanel5.setMinimumSize(new java.awt.Dimension(195, 195));
         jPanel5.setPreferredSize(new java.awt.Dimension(195, 195));
 
+        jLabel7.setText("xLN (cm): ");
+
+        btnDim.setText("Dimensionar");
+
+        txtProfundidade.setEditable(false);
+        txtProfundidade.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtProfundidade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel8.setText("Inclinação alfa (°): ");
+
+        txtInclinacao.setEditable(false);
+        txtInclinacao.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txtInclinacao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtProfundidade, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(txtInclinacao))))
+                .addGap(18, 18, 18))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(btnDim)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtProfundidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtInclinacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 52, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -265,17 +476,25 @@ public class viewAbaco extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.LINE_START);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setMinimumSize(new java.awt.Dimension(100, 14));
+        jPanel2.setPreferredSize(new java.awt.Dimension(100, 600));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 40));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
-        );
+        jButton1.setText("ENV");
+        jButton1.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(jButton1);
+
+        btnFCN_X.setText("FCN");
+        btnFCN_X.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(btnFCN_X);
+
+        jButton3.setText("FCO");
+        jButton3.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(jButton3);
+
+        jButton4.setText("FINISH");
+        jButton4.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(jButton4);
 
         add(jPanel2, java.awt.BorderLayout.LINE_END);
 
@@ -286,7 +505,7 @@ public class viewAbaco extends javax.swing.JPanel {
         jPanelInicial.setLayout(jPanelInicialLayout);
         jPanelInicialLayout.setHorizontalGroup(
             jPanelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 692, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         jPanelInicialLayout.setVerticalGroup(
             jPanelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,7 +518,7 @@ public class viewAbaco extends javax.swing.JPanel {
         jPanelAbaco.setLayout(jPanelAbacoLayout);
         jPanelAbacoLayout.setHorizontalGroup(
             jPanelAbacoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 692, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         jPanelAbacoLayout.setVerticalGroup(
             jPanelAbacoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,7 +531,7 @@ public class viewAbaco extends javax.swing.JPanel {
         jPEnvoltoria.setLayout(jPEnvoltoriaLayout);
         jPEnvoltoriaLayout.setHorizontalGroup(
             jPEnvoltoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 692, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         jPEnvoltoriaLayout.setVerticalGroup(
             jPEnvoltoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,29 +540,70 @@ public class viewAbaco extends javax.swing.JPanel {
 
         jPanelGraficos.add(jPEnvoltoria, "envoltoria");
 
+        javax.swing.GroupLayout JPEnvN_XLayout = new javax.swing.GroupLayout(JPEnvN_X);
+        JPEnvN_X.setLayout(JPEnvN_XLayout);
+        JPEnvN_XLayout.setHorizontalGroup(
+            JPEnvN_XLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 696, Short.MAX_VALUE)
+        );
+        JPEnvN_XLayout.setVerticalGroup(
+            JPEnvN_XLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 596, Short.MAX_VALUE)
+        );
+
+        jPanelGraficos.add(JPEnvN_X, "nx");
+
         add(jPanelGraficos, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnvoltoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnvoltoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnvoltoriaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel JPEnvN_X;
     private javax.swing.JButton btnAbaco;
+    private javax.swing.JButton btnDim;
     private javax.swing.JButton btnEnvoltoria;
+    private javax.swing.JButton btnFCN_X;
+    private javax.swing.JButton btn_FCN_GO;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPEnvoltoria;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanelAbaco;
     private javax.swing.JPanel jPanelGraficos;
     private javax.swing.JPanel jPanelInicial;
+    private javax.swing.JTextField txtFcn_V2;
+    private javax.swing.JTextField txtFcn_v1;
+    private javax.swing.JTextField txtFcn_w1;
+    private javax.swing.JTextField txtFcn_w2;
+    private javax.swing.JTextField txtInclinacao;
+    private javax.swing.JTextField txtProfundidade;
     private javax.swing.JTextField txtTaxa;
+    private javax.swing.JTextField txtUxS;
+    private javax.swing.JTextField txtUyS;
     private javax.swing.JTextField txtV;
     private javax.swing.JTextField txtW1;
     private javax.swing.JTextField txtW2;

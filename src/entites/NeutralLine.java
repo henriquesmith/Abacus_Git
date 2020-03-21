@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package entites;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -13,7 +14,7 @@ import views.progressDialog;
  *
  * @author Administrador
  */
-public class NeutralLine  {
+public class NeutralLine {
 
     private progressDialog PD;
     private final secaoTransversal secRecebida;
@@ -37,17 +38,76 @@ public class NeutralLine  {
         this.lambda = this.matRecebido.getConcrete().getLambda();
     }
 
-    public List<Esforcos> FC_N_ENV(float Nd, float atb, float alfa1) {
-        float xLN;
-        float alfa = alfa1;
-        List<Esforcos> moR = new ArrayList<>();
-        xLN = bissecant(0, 1000, alfa, atb, Nd);
-        for (float i = 0; i < 360; i++) {
-            moR.add(moments(xLN, alfa, atb));
+    public List<Esforcos> env_FCN(float v1, float v2, float As, float Alfa) {
+        float area = this.secRecebida.getArea();
+        float hx = this.secRecebida.getHx();
+        float hy = this.secRecebida.getH();
+        float sigma = this.matRecebido.getConcrete().getSigmacd() / 10;
+        List<Esforcos> mo = new ArrayList<>();
+        float a = v1;
+        while (a <= v2) {
+            float N = a * (area * sigma);
+            float xLN = bissecant(0, 1000, Alfa, As, N);
+            Esforcos e = moments(xLN,Alfa,As);
+            mo.add(e);
+            a = (float) (a+0.1);
         }
-        return moR;
+        return mo;
     }
- public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd) {
+
+    public float inclinacaoLN(float alfaIni, float Nd, float atb, Esforcos esfS) {
+        double precisao = 0.001;
+        float ALFA;
+        double tetaR;
+        float alfa1 = alfaIni;
+        float N = Nd;
+        float Ab = atb;
+        Esforcos esf_S = esfS;
+        double tetaD = esf_S.getTetaD();
+        // verifica-se se nao é caso de flexocompressão NORMAL
+        if (tetaD == 0 || tetaD == 180) {
+            ALFA = (float) (tetaD - 90);
+        } else if (tetaD == 90 || tetaD == -90 || tetaD == 270) {
+            ALFA = (float) (tetaD - 90);
+        } else {
+            float xLN;
+            Esforcos esfR;
+            //primeiro calcula-se a profundidade da Ln de acordo com o angulo inicial
+            xLN = bissecant(0, 1000, alfa1, Ab, N);
+            //Encontro o par de momentos devido a LN calculada e o angulo
+            esfR = moments(xLN, alfa1, Ab);
+            //comparo a inclinaçao dos esforcos
+            tetaR = esfR.getTetaD();
+            float nextA = 0;
+            while (Math.abs((tetaR - tetaD)) > precisao) {
+                nextA = nextAlfa(alfa1, (float) tetaR, (float) tetaD);
+                System.out.println("");
+                System.out.println("Inclinação avaliada: " + nextA);
+                xLN = bissecant(0, 1000, nextA, Ab, N);
+                esfR = moments(xLN, nextA, Ab);
+                tetaR = esfR.getTetaD();
+                alfa1 = nextA;
+            }
+            ALFA = nextA;
+        }
+        return ALFA;
+    }
+
+    //Método que escolhe o proximo valor da inclinaçãod e alfa em graus
+    private float nextAlfa(float alfaIni, float tetaR, float tetaD) {
+        float nextA;
+        if (tetaR > tetaD) {
+            nextA = ((alfaIni + (90)) * (tetaD / tetaR)) - 90;
+        } else if (tetaR < tetaD) {
+            nextA = ((90 - tetaD) / (90 - tetaR)) * alfaIni;
+        } else {
+            nextA = alfaIni;
+        }
+
+        return nextA;
+    }
+
+    public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd) {
         float a;
         List<Esforcos> moR = new ArrayList<>();
         a = a1;
@@ -57,10 +117,10 @@ public class NeutralLine  {
         for (float i = a; i < b; i++) {
             ln = bissecant(0, 1000, i, atb, Nd);
             moR.add(moments(ln, i, atb));
-           
+
         }
-         return moR;
- }
+        return moR;
+    }
 
     public Esforcos moments(float x0, float alfa, float atb) {
         secaoTransversal secRotate;
@@ -105,7 +165,7 @@ public class NeutralLine  {
         float f_e1;
         float p;
         f_e1 = comecar(e1, angulo, atb, Nd);
-        while (Math.abs(f_e1) > (float) 0.0015) {
+        while (Math.abs(f_e1) > (float) 0.002) {
             p = (f_0 * f_e1);
             if (p > 0) {
                 e0 = e1;
@@ -459,5 +519,4 @@ public class NeutralLine  {
         return secRecebida;
     }
 
-    
 }
