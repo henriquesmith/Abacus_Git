@@ -11,6 +11,7 @@ import entites.NeutralLine;
 import entites.secaoTransversal;
 import java.awt.CardLayout;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -21,9 +22,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+
 import views.grafico;
+import views.miniSecao;
+
 import views.viewAbaco;
 import views.progressDialog;
 
@@ -43,6 +48,7 @@ public class viewAbacoController implements PropertyChangeListener {
     private final secaoTransversal sec;
     private final Esforcos esforcos;
     private final Materials mat;
+    miniSecao ms;
 
     public viewAbacoController(JFrame parent, secaoTransversal sec, Esforcos esforcos, Materials mat) {
         this.parent = parent;
@@ -51,21 +57,29 @@ public class viewAbacoController implements PropertyChangeListener {
         this.mat = mat;
         this.view = new viewAbaco();
         taxa(sec, esforcos, mat);
+        ms = new miniSecao(sec);
+
         init();
     }
 
     private void init() {
+        view.getBtn_Done().addActionListener(null);
         view.getBtnFcn_Go().addActionListener(e -> FCN());
-        view.getBtnFCN_X().addActionListener(e ->getGraf_FCN());
+
+        view.getBtnFCN_X().addActionListener(e -> getGraf_FCN());
+        view.getBtn_FCO().addActionListener(e -> getABACO());
+        view.gettBtn_Env().addActionListener(e -> getEnV());
         view.getBtnDim().addActionListener(e -> gerarInclinacao());
         view.getBtnAbaco().addActionListener(e -> gerarAbaco());
         view.getBtnEnvoltoria().addActionListener(e -> gerarEnvoltoria());
+
         frame = new JFrame("Geração de abacos");
         this.pd = new progressDialog(this.frame);
         frame.setIconImage(this.parent.getIconImage());
         frame.setResizable(false);
         frame.add(view);
-        pd = new progressDialog(frame);
+        view.getJPanelINI().setLayout(new GridBagLayout());
+        view.getJPanelINI().add(ms);
         view.getJPanelN_X().setLayout(new GridBagLayout());
         view.getJPEenvoltoria().setLayout(new GridBagLayout());
         view.getJPanelABACO().setLayout(new GridBagLayout());
@@ -76,6 +90,8 @@ public class viewAbacoController implements PropertyChangeListener {
     }
 
     private void FCN() {
+        view.getJPanelN_X().removeAll();
+        view.getJPanelN_X().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "nx");
         float deltaw = (float) 0.2;
@@ -91,75 +107,109 @@ public class viewAbacoController implements PropertyChangeListener {
         float Mx = this.esforcos.getMxk();
         float My = this.esforcos.getMyk();
         double tetaD = this.esforcos.getTetaD();
-        float p;
-        float n = v1;
         pd.setMax(100);
         pd.setValue(0);
-        NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                pd.setVisible(true);
-            }
-
-        });
-        SwingWorker<Map<Float, List<Esforcos>>, Integer> worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
-
-            @Override
-            protected void done() {
-                grafico graf = new grafico();
-                try {
-                    Map<Float, List<Esforcos>> mo = get();
-                    view.getJPanelN_X().add(graf.grafico("", "'", "TIPO DE AÇO " + mat.getAco().getTypeAco().toString()));
-                    graf.setSeriesMap(mo, ac, hx, hy, sigma, tetaD);
-                    java.awt.Toolkit.getDefaultToolkit().beep();
-                    pd.setVisible(false);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ExecutionException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            @Override
-            protected void process(List<Integer> count) {
-                int progress = count.get(count.size() - 1);
-                pd.setValue(progress);
-            }
-
-            @Override
-            protected Map<Float, List<Esforcos>> doInBackground() throws Exception {
-                Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
-                float alfa = 0;
-                float count = (100 / (w2));
-                if (Mx == 0) {
-                    alfa = 0;
-                } else if (My == 0) {
-                    alfa = (0);
-                }
-                System.out.println("");
-                System.out.println("angulo: " + alfa);
-                for (float w = w1; w <= w2; w = (w + deltaw)) {
-                    System.out.println(" ");
-                    System.out.println("w avaliado: " + w);
-                    float As = (((w * ac * sigma) / fyd) * 100);
-                    List< Esforcos> es;
-                    es = ln.env_FCN(v1, v2, As, alfa);
-                    mom.put(w, es);
-                    float p = count * w;
-                    publish((int) p);
+        if (v1 >= 0) {
+            NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pd.setVisible(true);
                 }
 
-                return mom;
-            }
+            });
+            SwingWorker<Map<Float, List<Esforcos>>, Integer> worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
 
-        };
-        worker.execute();
+                @Override
+                protected void done() {
+                    grafico graf = new grafico();
+
+
+                    try {
+                        Map<Float, List<Esforcos>> mo = get();
+                        view.getJPanelN_X().add(graf.grafico("", "'", "TIPO DE AÇO  " + mat.getAco().getTypeAco().toString()));
+
+                        graf.setPlot(.90);
+                        
+                        graf.setSeriesMap(mo, ac, hx, hy, sigma, tetaD);
+                        graf.addSecao((Image) ms.setarImagem(), 435 , 5, true);
+                        graf.setCL();
+                       
+                        java.awt.Toolkit.getDefaultToolkit().beep();
+
+                        pd.setVisible(false);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                protected void process(List<Integer> count) {
+                    int progress = count.get(count.size() - 1);
+                    pd.setValue(progress);
+                }
+
+                @Override
+                protected Map<Float, List<Esforcos>> doInBackground() throws Exception {
+                    Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
+                    float alfa = 0;
+                    float alfa2 = 0;
+                    float count = (100 / (w2));
+                    if (Mx == 0) {
+                        if (My > 0) {
+                            alfa = 0;
+                            alfa2 = 180;
+                        } else {
+                            alfa = 180;
+                            alfa2 = 0;
+                        }
+                    } else if (My == 0) {
+                        if (Mx > 0) {
+                            alfa = (-90);
+                            alfa2 = 90;
+                        } else {
+                            alfa = (90);
+                            alfa2 = -90;
+                        }
+                    }
+                    System.out.println("");
+                    System.out.println("angulo: " + alfa + " angulo2: " + alfa2);
+                    for (float w = w1; w <= w2; w = (w + deltaw)) {
+                        System.out.println(" ");
+                        System.out.println("w avaliado: " + w);
+                        float As = (((w * ac * sigma) / fyd) * 100);
+                        List< Esforcos> es;
+                        es = ln.env_FCN(v1, v2, As, alfa, alfa2);
+                        mom.put(w, es);
+                        float p = count * w;
+                        publish((int) p);
+                    }
+
+                    return mom;
+                }
+
+            };
+            worker.execute();
+        } else {
+            JOptionPane.showMessageDialog(this.frame, "O valor da normal reduzida deve ser Maior ou igual a Zero (Normal de compressão)", "Importante", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void getGraf_FCN() {
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "nx");
+    }
+
+    private void getEnV() {
+        CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
+        cl.show(view.getJPGraficos(), "envoltoria");
+    }
+
+    private void getABACO() {
+        CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
+        cl.show(view.getJPGraficos(), "abaco");
     }
 
     // arrumar method
@@ -177,13 +227,14 @@ public class viewAbacoController implements PropertyChangeListener {
         NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
 
         List<Esforcos> mo = new ArrayList<>();
-        float a = 0;
-        while (a <= 2.0) {
+        float a = -2;
+        while (a <= 2) {
             System.out.println(" ");
             System.out.println("valor avaliado: " + a);
             float n = a * (this.sec.getArea()) * (this.mat.getConcrete().getSigmacd() / 10);
-            float xLN = ln.bissecant(0, 1000, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars(), n);
+            float xLN = ln.bissecant(0, 1000, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars(), n, (float) 0.002);
             Esforcos e = ln.moments(xLN, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars());
+
             mo.add(e);
             a = (float) (a + 0.1);
 
@@ -201,19 +252,21 @@ public class viewAbacoController implements PropertyChangeListener {
         }
 
         view.getJPanelN_X().add(graf.grafico("v", "ux", "Teste FCO"));
-        graf.setSeries(N, mx, 10);
+        graf.setSeries(N, my, 10);
 
     }
 
     private void gerarInclinacao() {
         NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
         float inc = ln.inclinacaoLN((float) (this.esforcos.getTetaD() - 90), this.esforcos.getNk(), this.sec.getBars().getAreaBars(), this.esforcos);
-        float xLN = ln.bissecant(0, 1000, inc, this.sec.getBars().getAreaBars(), this.esforcos.getNk());
+        float xLN = ln.bissecant(0, 1000, inc, this.sec.getBars().getAreaBars(), this.esforcos.getNk(), (float) 0.001);
         view.getTxtInclinacao().setText(String.format("%.2f", inc));
         view.getTxtProfundidade().setText(String.format("%.2f", xLN));
     }
 
     private void gerarAbaco() {
+        view.getJPanelABACO().removeAll();
+        view.getJPanelABACO().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "abaco");
         float V = Float.parseFloat(view.getTxtVarV().getText());
@@ -247,7 +300,8 @@ public class viewAbacoController implements PropertyChangeListener {
                 try {
                     Map<Float, List<Esforcos>> mo = get();
                     System.out.println("Size: " + mo.size());
-                    view.getJPanelABACO().add(graf.grafico("μx", "μy", "TIPO DE AÇO" + mat.getAco().getTypeAco().toString()));
+                    view.getJPanelABACO().add(graf.grafico("μx", "μy", "TIPO DE AÇO " + mat.getAco().getTypeAco().toString()));
+                    graf.setPlot(0.95);
                     graf.setSeriesMap(mo, ac, hx, hy, sigma, 45);
                     pd.setValue(100);
                     java.awt.Toolkit.getDefaultToolkit().beep();
@@ -290,8 +344,11 @@ public class viewAbacoController implements PropertyChangeListener {
     } //metodo que gera a envoltória de momentos da seçao idealizada
 
     private void gerarEnvoltoria() {
+        view.getJPEenvoltoria().removeAll();
+        view.getJPEenvoltoria().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "envoltoria");
+        pd.setValue(0);
         pd.setMax(360);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -317,6 +374,7 @@ public class viewAbacoController implements PropertyChangeListener {
                     }
                     java.awt.Toolkit.getDefaultToolkit().beep();
                     view.getJPEenvoltoria().add(graf.grafico("Mx (kN.m)", "My(kN.m)", mat.getAco().getTypeAco().toString()));
+                    graf.setPlot(0.95);
                     graf.setSeries(mx, my, taxaSec);
                     //graf.setPoint(Mx, My);
                 } catch (InterruptedException ex) {
@@ -340,7 +398,7 @@ public class viewAbacoController implements PropertyChangeListener {
                 int count = 0;
                 for (float i = 0; i <= 360; i++) {
                     float xLN;
-                    xLN = ln.bissecant(0, 1000, i, sec.getBars().getAreaBars(), esforcos.getNk());
+                    xLN = ln.bissecant(0, 1000, i, sec.getBars().getAreaBars(), esforcos.getNk(), (float) 0.002);
                     mom.add(ln.moments(xLN, i, sec.getBars().getAreaBars()));
                     count++;
                     publish(count);

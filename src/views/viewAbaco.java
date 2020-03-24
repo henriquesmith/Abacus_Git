@@ -28,6 +28,18 @@ public class viewAbaco extends javax.swing.JPanel {
         return new Dimension(1000, 600);
     }
 
+    public JButton getBtn_Done() {
+        return this.btn_Done;
+    }
+
+    public JButton getBtn_FCO() {
+        return this.btn_FCO;
+    }
+
+    public JButton gettBtn_Env() {
+        return this.btn_enV;
+    }
+
     public JTextField getTxtUxS() {
         return this.txtUxS;
     }
@@ -117,6 +129,10 @@ public class viewAbaco extends javax.swing.JPanel {
         return this.btn_FCN_GO;
     }
 
+    public JPanel getJPanelINI() {
+        return this.jPanelInicial;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,10 +180,10 @@ public class viewAbaco extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         txtInclinacao = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btn_enV = new javax.swing.JButton();
         btnFCN_X = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btn_FCO = new javax.swing.JButton();
+        btn_Done = new javax.swing.JButton();
         jPanelGraficos = new javax.swing.JPanel();
         jPanelInicial = new javax.swing.JPanel();
         jPanelAbaco = new javax.swing.JPanel();
@@ -480,21 +496,21 @@ public class viewAbaco extends javax.swing.JPanel {
         jPanel2.setPreferredSize(new java.awt.Dimension(100, 600));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 40));
 
-        jButton1.setText("ENV");
-        jButton1.setPreferredSize(new java.awt.Dimension(77, 100));
-        jPanel2.add(jButton1);
+        btn_enV.setText("ENV");
+        btn_enV.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(btn_enV);
 
         btnFCN_X.setText("FCN");
         btnFCN_X.setPreferredSize(new java.awt.Dimension(77, 100));
         jPanel2.add(btnFCN_X);
 
-        jButton3.setText("FCO");
-        jButton3.setPreferredSize(new java.awt.Dimension(77, 100));
-        jPanel2.add(jButton3);
+        btn_FCO.setText("FCO");
+        btn_FCO.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(btn_FCO);
 
-        jButton4.setText("FINISH");
-        jButton4.setPreferredSize(new java.awt.Dimension(77, 100));
-        jPanel2.add(jButton4);
+        btn_Done.setText("FINISH");
+        btn_Done.setPreferredSize(new java.awt.Dimension(77, 100));
+        jPanel2.add(btn_Done);
 
         add(jPanel2, java.awt.BorderLayout.LINE_END);
 
@@ -567,10 +583,10 @@ public class viewAbaco extends javax.swing.JPanel {
     private javax.swing.JButton btnDim;
     private javax.swing.JButton btnEnvoltoria;
     private javax.swing.JButton btnFCN_X;
+    private javax.swing.JButton btn_Done;
     private javax.swing.JButton btn_FCN_GO;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btn_FCO;
+    private javax.swing.JButton btn_enV;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

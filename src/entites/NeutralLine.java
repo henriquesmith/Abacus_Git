@@ -38,7 +38,7 @@ public class NeutralLine {
         this.lambda = this.matRecebido.getConcrete().getLambda();
     }
 
-    public List<Esforcos> env_FCN(float v1, float v2, float As, float Alfa) {
+    public List<Esforcos> env_FCN(float v1, float v2, float As, float Alfa, float Alfa2) {
         float area = this.secRecebida.getArea();
         float hx = this.secRecebida.getHx();
         float hy = this.secRecebida.getH();
@@ -47,11 +47,13 @@ public class NeutralLine {
         float a = v1;
         while (a <= v2) {
             float N = a * (area * sigma);
-            float xLN = bissecant(0, 1000, Alfa, As, N);
-            Esforcos e = moments(xLN,Alfa,As);
+            float xLN = bissecant(0, 1000, Alfa, As, N,(float)0.002);
+            Esforcos e = moments(xLN, Alfa, As);
             mo.add(e);
-            a = (float) (a+0.1);
+            a = (float) (a + 0.1);
         }
+
+
         return mo;
     }
 
@@ -73,7 +75,7 @@ public class NeutralLine {
             float xLN;
             Esforcos esfR;
             //primeiro calcula-se a profundidade da Ln de acordo com o angulo inicial
-            xLN = bissecant(0, 1000, alfa1, Ab, N);
+            xLN = bissecant(0, 1000, alfa1, Ab, N, (float) 0.001);
             //Encontro o par de momentos devido a LN calculada e o angulo
             esfR = moments(xLN, alfa1, Ab);
             //comparo a inclinaçao dos esforcos
@@ -83,7 +85,7 @@ public class NeutralLine {
                 nextA = nextAlfa(alfa1, (float) tetaR, (float) tetaD);
                 System.out.println("");
                 System.out.println("Inclinação avaliada: " + nextA);
-                xLN = bissecant(0, 1000, nextA, Ab, N);
+                xLN = bissecant(0, 1000, nextA, Ab, N, (float) 0.001);
                 esfR = moments(xLN, nextA, Ab);
                 tetaR = esfR.getTetaD();
                 alfa1 = nextA;
@@ -115,7 +117,7 @@ public class NeutralLine {
         b = a2;
         float ln;
         for (float i = a; i < b; i++) {
-            ln = bissecant(0, 1000, i, atb, Nd);
+            ln = bissecant(0, 1000, i, atb, Nd, (float) 0.002);
             moR.add(moments(ln, i, atb));
 
         }
@@ -143,7 +145,8 @@ public class NeutralLine {
     }
 // metodo da bissecant pr encontar a profundidade da lina neutra de acordo com um angulo alfa
 
-    public float bissecant(float a, float b, float angulo, float atb, float Nd) {
+    public float bissecant(float a, float b, float angulo, float atb, float Nd, float precisao) {
+        float erro = precisao;
         float xLn;
         float e0 = a;
         float eu = b;
@@ -165,7 +168,7 @@ public class NeutralLine {
         float f_e1;
         float p;
         f_e1 = comecar(e1, angulo, atb, Nd);
-        while (Math.abs(f_e1) > (float) 0.002) {
+        while (Math.abs(f_e1) > (float) erro) {
             p = (f_0 * f_e1);
             if (p > 0) {
                 e0 = e1;

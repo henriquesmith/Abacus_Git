@@ -168,14 +168,6 @@ public class areaDesenho extends javax.swing.JPanel {
 
         }
 
-      //  if (centroide != null) {
-        //  if (vertices.size() > 2) {
-             //   g2.setColor(Color.lightGray);
-        //    drawLinesCG(g);
-        //    g2.setColor(Color.green);
-        //    drawPoint(g, centroide.getX(), centroide.getY());
-          //  }
-        // }
         if (bars.size() > 0) {
             g2.setColor(Color.black);
             for (barra b : bars) {
