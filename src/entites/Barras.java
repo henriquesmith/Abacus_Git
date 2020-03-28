@@ -42,7 +42,6 @@ public class Barras {
                 aux += barras.get(i).getArea();
             }
             this.areaBars = aux;
-            System.out.println("area é : " + areaBars);
         }
     }
 

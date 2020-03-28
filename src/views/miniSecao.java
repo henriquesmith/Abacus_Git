@@ -5,23 +5,24 @@
  */
 package views;
 
-import com.sun.prism.BasicStroke;
 import entites.Vertice;
 import entites.barra;
 import entites.secaoTransversal;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.Toolkit;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import jdk.nashorn.internal.objects.Global;
 
 /**
@@ -30,19 +31,30 @@ import jdk.nashorn.internal.objects.Global;
  */
 public final class miniSecao extends JPanel {
 
-    Vertice centro = null;
+    private Vertice centro = null;
     private BufferedImage BI;
     secaoTransversal sec;
     List<Vertice> vertices;
     List<barra> bars;
     Graphics gs;
+    private double zoom = 1;
+    String tal;
+    private Image im;
 
     public miniSecao(secaoTransversal sec) {
         this.sec = sec;
         this.vertices = sec.getVertices();
         this.bars = sec.getBars().getBarras();
-        setBackground(Color.WHITE);
+        this.repaint();
+        parametrosgeom();
+        setBackground(Color.white);
         setOpaque(true);
+        this.repaint();
+
+    }
+
+    private void parametrosgeom() {
+        tal = String.format("%.2f", (sec.getH() - sec.getD()) / (sec.getH()));
 
     }
 
@@ -73,7 +85,7 @@ public final class miniSecao extends JPanel {
     @Override
     public Dimension getPreferredSize() {
 
-        return new Dimension(150, 150);
+        return new Dimension(125, 125);
     }
 
     private void drawLines(Graphics g) {
@@ -81,16 +93,16 @@ public final class miniSecao extends JPanel {
         for (int i = 1; i < vertices.size(); i++) {
             Vertice v1 = vertices.get(i - 1);
             Vertice v2 = vertices.get(i);
-            g2.draw(new Line2D.Float(v1.getX(), -v1.getY(), v2.getX(), -v2.getY()));
+            g2.draw(new Line2D.Float((float) (zoom * v1.getX()), (float) (zoom * -v1.getY()), (float) (zoom * v2.getX()), (float) (zoom * -v2.getY())));
         }
         Vertice ini = vertices.get(vertices.size() - 1);
         Vertice fim = vertices.get(0);
-        g2.draw(new Line2D.Float(ini.getX(), -ini.getY(), fim.getX(), -fim.getY()));
+        g2.draw(new Line2D.Float((float) (zoom * ini.getX()), (float) (zoom * -ini.getY()), (float) (zoom * fim.getX()), (float) (zoom * -fim.getY())));
     }
 
     private void drawPoint(Graphics g, float x, float y) {
         Graphics2D g2 = (Graphics2D) g;
-        Shape circle = new Arc2D.Float((float) (x) - 1, (float) (y * (-1)) - 1, 2, 2, 0, 360, Arc2D.CHORD);
+        Shape circle = new Arc2D.Float((float) (zoom * x) - 2, (float) (zoom * y * (-1)) - 2, 4, 4, 0, 360, Arc2D.CHORD);
         g2.fill(circle);
     }
 
@@ -109,14 +121,15 @@ public final class miniSecao extends JPanel {
                         0.0f);
         g2.setStroke(stroke);
         updateCentro();
-        g2.scale(1.0, 1.0);
-        g.translate(((int) centro.getX() - getWidth() / 2) * (-1), getHeight() - ((int) centro.getY() - getHeight() / 2) * (-1));
+        g2.scale(zoom, zoom);
+        g.translate(((int) getCentro().getX() - getWidth() / 2) * (-1), getHeight() - ((int) getCentro().getY() - getHeight() / 2) * (-1));
         g2.setColor(Color.BLACK);
 
         drawLines(g2);
         for (Vertice v : vertices) {
 
             drawPoint(g2, v.getX(), v.getY());
+
         }
         for (barra b : bars) {
             drawPoint(g2, b.getX(), b.getY());
@@ -125,16 +138,28 @@ public final class miniSecao extends JPanel {
     }
 
     public BufferedImage setarImagem() {
-        this.validate();
-        this.repaint();
-        BI = new BufferedImage(this.getPreferredSize().getSize().width, this.getPreferredSize().getSize().height, BufferedImage.TYPE_INT_RGB);
-        System.out.println("W: " + this.getPreferredSize().getSize().width + " H: " + this.getPreferredSize().getSize().height);
-        this.revalidate();
-        Graphics2D g3 = BI.createGraphics();
-        this.print(g3);
-        this.repaint();
+        int w = this.getWidth();
+        int h = this.getHeight();
+        BI = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D gd2 = (Graphics2D) BI.getGraphics();
+        gd2.setColor(Color.WHITE);
+        gd2.drawRect(0, 0, w, h);
+        gd2.setComposite(AlphaComposite.Clear);
+        gd2.fillRect(0, 0, w, h);
+        gd2.translate(((int) getCentro().getX() - getWidth() / 2) * (-1), getHeight() - ((int) getCentro().getY() - getHeight() / 2) * (-1));
+        
+        gd2.setComposite(AlphaComposite.Src);
+        gd2.setColor(Color.BLACK);
+        gd2.scale(1.0, 1.0);
+        drawLines(gd2);
+        for (barra b : bars) {
+            drawPoint(gd2, b.getX(), b.getY());
+        }
+        gd2.setFont(new Font("Tahoma", Font.BOLD, 12));
+        gd2.drawString("δ = " + tal, vertices.get(0).getX() -15, vertices.get(vertices.size() -1).getY() - 10);
+        gd2.dispose();
+        
 
-        this.revalidate();
         return BI;
     }
 
@@ -143,6 +168,27 @@ public final class miniSecao extends JPanel {
      */
     public BufferedImage getBI() {
         return BI;
+    }
+
+    /**
+     * @return the centro
+     */
+    public Vertice getCentro() {
+        return centro;
+    }
+
+    /**
+     * @return the zoom
+     */
+    public double getZoom() {
+        return zoom;
+    }
+
+    /**
+     * @return the im
+     */
+    public Image getIm() {
+        return im;
     }
 
 }

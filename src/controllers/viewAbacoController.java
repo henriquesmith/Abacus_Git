@@ -9,9 +9,9 @@ import entites.Esforcos;
 import entites.Materials;
 import entites.NeutralLine;
 import entites.secaoTransversal;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -36,7 +34,7 @@ import views.progressDialog;
  *
  * @author Administrador
  */
-public class viewAbacoController implements PropertyChangeListener {
+public class viewAbacoController implements PropertyChangeListener, progressDialogListener {
 
     private List<Float> Mx;
     private List<Float> My;
@@ -49,6 +47,8 @@ public class viewAbacoController implements PropertyChangeListener {
     private final Esforcos esforcos;
     private final Materials mat;
     miniSecao ms;
+    private SwingWorker<Map<Float, List<Esforcos>>, Integer> worker;
+    private SwingWorker<List<Esforcos>, Integer> worker2;
 
     public viewAbacoController(JFrame parent, secaoTransversal sec, Esforcos esforcos, Materials mat) {
         this.parent = parent;
@@ -58,14 +58,12 @@ public class viewAbacoController implements PropertyChangeListener {
         this.view = new viewAbaco();
         taxa(sec, esforcos, mat);
         ms = new miniSecao(sec);
-
         init();
     }
 
     private void init() {
-        view.getBtn_Done().addActionListener(null);
         view.getBtnFcn_Go().addActionListener(e -> FCN());
-
+        view.getPanelS().setLayout(new BorderLayout());
         view.getBtnFCN_X().addActionListener(e -> getGraf_FCN());
         view.getBtn_FCO().addActionListener(e -> getABACO());
         view.gettBtn_Env().addActionListener(e -> getEnV());
@@ -73,13 +71,19 @@ public class viewAbacoController implements PropertyChangeListener {
         view.getBtnAbaco().addActionListener(e -> gerarAbaco());
         view.getBtnEnvoltoria().addActionListener(e -> gerarEnvoltoria());
 
+        view.getGrup().add(view.getButton0());
+        view.getGrup().add(view.getButton90());
+
         frame = new JFrame("Geração de abacos");
         this.pd = new progressDialog(this.frame);
+        pd.setListener(this);
         frame.setIconImage(this.parent.getIconImage());
         frame.setResizable(false);
         frame.add(view);
+        frame.setOpacity(1);
         view.getJPanelINI().setLayout(new GridBagLayout());
         view.getJPanelINI().add(ms);
+        view.getPanelS().add(ms);
         view.getJPanelN_X().setLayout(new GridBagLayout());
         view.getJPEenvoltoria().setLayout(new GridBagLayout());
         view.getJPanelABACO().setLayout(new GridBagLayout());
@@ -95,105 +99,113 @@ public class viewAbacoController implements PropertyChangeListener {
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "nx");
         float deltaw = (float) 0.2;
-        float v1 = Float.parseFloat(view.getTxtFcn_v1().getText());
-        float v2 = Float.parseFloat(view.getTxtFcn_v2().getText());
-        float w1 = Float.parseFloat(view.getTxtFcn_w1().getText());
-        float w2 = Float.parseFloat(view.getTxtFcn_w2().getText());
-        float ac = this.sec.getArea(); // cm²
-        float sigma = this.mat.getConcrete().getSigmacd() / 10;//kN/cm²
-        float fyd = this.mat.getAco().getFyd() / 10; //kN/cm²
-        float hx = this.sec.getHx();
-        float hy = this.sec.getH();
-        float Mx = this.esforcos.getMxk();
-        float My = this.esforcos.getMyk();
-        double tetaD = this.esforcos.getTetaD();
-        pd.setMax(100);
-        pd.setValue(0);
-        if (v1 >= 0) {
-            NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    pd.setVisible(true);
-                }
+        if (view.getTxtFcn_w1().getText().isEmpty() || view.getTxtFcn_w2().getText().isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Insira a variação da taxa de armadura", "Aviso!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (view.getButton0().isSelected() || view.getButton90().isSelected()) {
+                float w1 = Float.parseFloat(view.getTxtFcn_w1().getText());
+                float w2 = Float.parseFloat(view.getTxtFcn_w2().getText());
+                float ac = this.sec.getArea(); // cm²
+                float sigma = this.mat.getConcrete().getSigmacd() / 10;//kN/cm²
+                float fyd = this.mat.getAco().getFyd() / 10; //kN/cm²
+                float hx = this.sec.getHx();
+                float hy = this.sec.getH();
+                pd.setMax(100);
+                pd.setValue(0);
 
-            });
-            SwingWorker<Map<Float, List<Esforcos>>, Integer> worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
+                NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        pd.setVisible(true);
+                    }
 
-                @Override
-                protected void done() {
-                    grafico graf = new grafico();
+                });
 
+                worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
 
-                    try {
-                        Map<Float, List<Esforcos>> mo = get();
-                        view.getJPanelN_X().add(graf.grafico("", "'", "TIPO DE AÇO  " + mat.getAco().getTypeAco().toString()));
+                    @Override
+                    protected void done() {
+                        double tetaD = 0;
+                        if (view.getButton0().isSelected() == true && view.getButton90().isSelected() == false) {
+                            tetaD = 90;
 
-                        graf.setPlot(.90);
-                        
-                        graf.setSeriesMap(mo, ac, hx, hy, sigma, tetaD);
-                        graf.addSecao((Image) ms.setarImagem(), 435 , 5, true);
-                        graf.setCL();
-                       
-                        java.awt.Toolkit.getDefaultToolkit().beep();
+                        } else if (view.getButton90().isSelected()) {
+                            tetaD = 0;
+                        }
+                        grafico graf = new grafico();
 
                         pd.setVisible(false);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ExecutionException ex) {
-                        Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                        if (isCancelled() == true) {
+                            return;
+                        }
+
+                        try {
+                            Map<Float, List<Esforcos>> mo = get();
+                            view.getJPanelN_X().add(graf.grafico("", "'", "TIPO DE AÇO  " + mat.getAco().getTypeAco().toString()));
+
+                            graf.setPlot(.8);
+
+                            graf.setSeriesMap(mo, ac, hx, hy, sigma, tetaD);
+                            graf.addSecao(ms.setarImagem(), 350, 40, true);
+                            graf.setGrid(false);
+                            graf.setCL(1);
+
+                            java.awt.Toolkit.getDefaultToolkit().beep();
+
+                            pd.setVisible(false);
+                        } catch (InterruptedException | ExecutionException ex) {
+
+                        }
                     }
-                }
 
-                @Override
-                protected void process(List<Integer> count) {
-                    int progress = count.get(count.size() - 1);
-                    pd.setValue(progress);
-                }
+                    @Override
+                    protected void process(List<Integer> count) {
+                        int progress = count.get(count.size() - 1);
+                        pd.setValue(progress);
+                    }
 
-                @Override
-                protected Map<Float, List<Esforcos>> doInBackground() throws Exception {
-                    Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
-                    float alfa = 0;
-                    float alfa2 = 0;
-                    float count = (100 / (w2));
-                    if (Mx == 0) {
-                        if (My > 0) {
+                    @Override
+                    protected Map<Float, List<Esforcos>> doInBackground() throws Exception {
+                        Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
+                        float alfa = 0;
+                        float alfa2 = 0;
+                        float count = (100 / (w2));
+                        if (view.getButton0().isSelected() == true && view.getButton90().isSelected() == false) {
                             alfa = 0;
                             alfa2 = 180;
-                        } else {
-                            alfa = 180;
-                            alfa2 = 0;
-                        }
-                    } else if (My == 0) {
-                        if (Mx > 0) {
-                            alfa = (-90);
-                            alfa2 = 90;
-                        } else {
-                            alfa = (90);
+                        } else if (view.getButton90().isSelected()) {
+                            alfa = 90;
                             alfa2 = -90;
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Selecione o angulo desejado!", "Importante", JOptionPane.INFORMATION_MESSAGE);
                         }
-                    }
-                    System.out.println("");
-                    System.out.println("angulo: " + alfa + " angulo2: " + alfa2);
-                    for (float w = w1; w <= w2; w = (w + deltaw)) {
-                        System.out.println(" ");
-                        System.out.println("w avaliado: " + w);
-                        float As = (((w * ac * sigma) / fyd) * 100);
-                        List< Esforcos> es;
-                        es = ln.env_FCN(v1, v2, As, alfa, alfa2);
-                        mom.put(w, es);
-                        float p = count * w;
-                        publish((int) p);
+                        System.out.println("");
+                        System.out.println("angulo: " + alfa + " angulo2: " + alfa2);
+
+                        for (float w = w1; w <= w2; w = (w + deltaw)) {
+                            if (isCancelled()) {
+                                break;
+                            }
+                            System.out.println(" ");
+                            System.out.println("w avaliado: " + w);
+                            float As = (((w * ac * sigma) / fyd) * 100);
+                            List< Esforcos> es;
+                            es = ln.env_FCN(As, alfa, alfa2);
+                            mom.put(w, es);
+                            float p = count * w;
+                            publish((int) p);
+                        }
+
+                        return mom;
                     }
 
-                    return mom;
-                }
+                };
+                worker.execute();
 
-            };
-            worker.execute();
-        } else {
-            JOptionPane.showMessageDialog(this.frame, "O valor da normal reduzida deve ser Maior ou igual a Zero (Normal de compressão)", "Importante", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Escolha um angulo no checkBox", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
@@ -234,8 +246,9 @@ public class viewAbacoController implements PropertyChangeListener {
             float n = a * (this.sec.getArea()) * (this.mat.getConcrete().getSigmacd() / 10);
             float xLN = ln.bissecant(0, 1000, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars(), n, (float) 0.002);
             Esforcos e = ln.moments(xLN, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars());
-
+            Esforcos es = new Esforcos(e.getMxk(), e.getMyk(), e.getNk());
             mo.add(e);
+            mo.add(es);
             a = (float) (a + 0.1);
 
         }
@@ -252,13 +265,13 @@ public class viewAbacoController implements PropertyChangeListener {
         }
 
         view.getJPanelN_X().add(graf.grafico("v", "ux", "Teste FCO"));
-        graf.setSeries(N, my, 10);
+        graf.setSeries(N, my, 10f);
 
     }
 
     private void gerarInclinacao() {
         NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
-        float inc = ln.inclinacaoLN((float) (this.esforcos.getTetaD() - 90), this.esforcos.getNk(), this.sec.getBars().getAreaBars(), this.esforcos);
+        float inc = ln.inclinacaoLN((float) (this.esforcos.getTetaD() - 90), this.esforcos.getNk(), this.sec.getBars().getAreaBars(), this.esforcos, (float) 0.001);
         float xLN = ln.bissecant(0, 1000, inc, this.sec.getBars().getAreaBars(), this.esforcos.getNk(), (float) 0.001);
         view.getTxtInclinacao().setText(String.format("%.2f", inc));
         view.getTxtProfundidade().setText(String.format("%.2f", xLN));
@@ -291,26 +304,31 @@ public class viewAbacoController implements PropertyChangeListener {
 
         });
 
-        SwingWorker<Map<Float, List<Esforcos>>, Integer> worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
+        worker = new SwingWorker<Map<Float, List<Esforcos>>, Integer>() {
             Map<Float, List<Esforcos>> moR;
 
             @Override
             protected void done() {
                 grafico graf = new grafico();
+                pd.setVisible(false);
+                if (isCancelled()) {
+                    return;
+                }
                 try {
                     Map<Float, List<Esforcos>> mo = get();
                     System.out.println("Size: " + mo.size());
-                    view.getJPanelABACO().add(graf.grafico("μx", "μy", "TIPO DE AÇO " + mat.getAco().getTypeAco().toString()));
-                    graf.setPlot(0.95);
+                    view.getJPanelABACO().add(graf.grafico("μx", "μy", "AÇO " + mat.getAco().getTypeAco().toString() + "        ν= " + view.getTxtVarV().getText()));
+                    graf.setPlot(.70);
                     graf.setSeriesMap(mo, ac, hx, hy, sigma, 45);
+                    graf.addSecao(ms.setarImagem(), 350, 40, true);
+                    graf.setGrid(false);
+                    graf.setCL(1);
                     pd.setValue(100);
                     java.awt.Toolkit.getDefaultToolkit().beep();
                     pd.setVisible(false);
 
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ExecutionException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException | ExecutionException ex) {
+
                 }
             }
 
@@ -325,13 +343,17 @@ public class viewAbacoController implements PropertyChangeListener {
                 float count = (100 / (w2));
                 float p;
                 Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
-                for (float w = w1; w <= w2; w = w + deltaW) {
+                float w = w1;
+                while (w <= w2) {
+                    if (isCancelled()) {
+                        break;
+                    }
                     float As = ((w * ac * sigma) / fyd) * 100;
                     List< Esforcos> es;
-                    es = ln.envoltoria(0, 360, As, N);
+                    es = ln.envoltoria(0, 360, As, N, (float) 0.0025);
                     mom.put(w, es);
                     p = count * w;
-
+                    w = w + deltaW;
                     publish((int) p);
 
                 }
@@ -349,7 +371,7 @@ public class viewAbacoController implements PropertyChangeListener {
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
         cl.show(view.getJPGraficos(), "envoltoria");
         pd.setValue(0);
-        pd.setMax(360);
+        pd.setMax(100);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -358,7 +380,7 @@ public class viewAbacoController implements PropertyChangeListener {
 
         });
         NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
-        SwingWorker<List<Esforcos>, Integer> worker = new SwingWorker<List<Esforcos>, Integer>() {
+        worker2 = new SwingWorker<List<Esforcos>, Integer>() {
             List<Esforcos> moR;
 
             @Override
@@ -366,6 +388,10 @@ public class viewAbacoController implements PropertyChangeListener {
                 grafico graf = new grafico();
                 List<Float> mx = new ArrayList<>();
                 List<Float> my = new ArrayList<>();
+                pd.setVisible(false);
+                if (isCancelled()) {
+                    return;
+                }
                 try {
                     List<Esforcos> mom = get();
                     for (Esforcos e : mom) {
@@ -373,14 +399,14 @@ public class viewAbacoController implements PropertyChangeListener {
                         my.add(e.getMyk());
                     }
                     java.awt.Toolkit.getDefaultToolkit().beep();
-                    view.getJPEenvoltoria().add(graf.grafico("Mx (kN.m)", "My(kN.m)", mat.getAco().getTypeAco().toString()));
-                    graf.setPlot(0.95);
+                    view.getJPEenvoltoria().add(graf.grafico("Mx (kN.m)", "My(kN.m)", "AÇO " + mat.getAco().getTypeAco().toString() + "    ν = " + String.format("%.2f", Vsec)));
+                    graf.setPlot(0.8);
+                    graf.setGrid(true);
                     graf.setSeries(mx, my, taxaSec);
-                    //graf.setPoint(Mx, My);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ExecutionException ex) {
-                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                    graf.addSecao(ms.setarImagem(), 350, 40, true);
+                    graf.setGrid(false);
+                } catch (InterruptedException | ExecutionException ex) {
+
                 }
                 pd.setVisible(false);
 
@@ -389,7 +415,7 @@ public class viewAbacoController implements PropertyChangeListener {
             @Override
             protected void process(List<Integer> count) {
                 int lastcount = count.get(count.size() - 1);
-                pd.setValue(lastcount);
+                pd.setValue((100 * lastcount) / 360);
             }
 
             @Override
@@ -397,6 +423,9 @@ public class viewAbacoController implements PropertyChangeListener {
                 List<Esforcos> mom = new ArrayList<>();
                 int count = 0;
                 for (float i = 0; i <= 360; i++) {
+                    if (isCancelled()) {
+                        break;
+                    }
                     float xLN;
                     xLN = ln.bissecant(0, 1000, i, sec.getBars().getAreaBars(), esforcos.getNk(), (float) 0.002);
                     mom.add(ln.moments(xLN, i, sec.getBars().getAreaBars()));
@@ -408,7 +437,7 @@ public class viewAbacoController implements PropertyChangeListener {
             }
 
         };
-        worker.execute();
+        worker2.execute();
     }
 
     private void taxa(secaoTransversal s, Esforcos esf, Materials mat) {
@@ -489,5 +518,15 @@ public class viewAbacoController implements PropertyChangeListener {
      */
     public float getUys() {
         return Uys;
+    }
+
+    @Override
+    public void ProgressBarcanceled() {
+        if (worker != null) {
+            worker.cancel(true);
+        }
+        if (worker2 != null) {
+            worker2.cancel(true);
+        }
     }
 }

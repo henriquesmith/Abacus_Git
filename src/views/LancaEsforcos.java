@@ -25,7 +25,7 @@ public class LancaEsforcos extends javax.swing.JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(240, 220);
+        return new Dimension(395, 375);
     }
 
     public JButton getBtnLancar() {
@@ -83,6 +83,9 @@ public class LancaEsforcos extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtNK = new javax.swing.JTextField();
         btnLancar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
 
         JPanelE.setBackground(new java.awt.Color(255, 255, 255));
         JPanelE.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Excêntricidades ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 12))); // NOI18N
@@ -114,22 +117,26 @@ public class LancaEsforcos extends javax.swing.JPanel {
         jLabel7.setText("cm");
         JPanelE.add(jLabel7);
 
-        setPreferredSize(new java.awt.Dimension(240, 220));
+        setMinimumSize(new java.awt.Dimension(395, 375));
+        setPreferredSize(new java.awt.Dimension(395, 375));
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBackground(new java.awt.Color(65, 63, 65));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 50));
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 15));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Esforços solicitantes característicos");
-        jPanel1.add(jLabel8);
+        jLabel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.add(jLabel8, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.setBackground(new java.awt.Color(65, 63, 65));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -185,8 +192,9 @@ public class LancaEsforcos extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
         jPanel3.add(txtNK, gridBagConstraints);
 
-        btnLancar.setBackground(new java.awt.Color(69, 73, 74));
+        btnLancar.setBackground(new java.awt.Color(75, 80, 80));
         btnLancar.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        btnLancar.setForeground(new java.awt.Color(0, 0, 0));
         btnLancar.setText("Lançar esforços ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -197,6 +205,25 @@ public class LancaEsforcos extends javax.swing.JPanel {
         jPanel3.add(btnLancar, gridBagConstraints);
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setPreferredSize(new java.awt.Dimension(155, 10));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/dir_ESF.png"))); // NOI18N
+        jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(jLabel9, java.awt.BorderLayout.CENTER);
+
+        add(jPanel2, java.awt.BorderLayout.EAST);
+
+        jPanel4.setBackground(new java.awt.Color(65, 63, 65));
+        jPanel4.setMinimumSize(new java.awt.Dimension(30, 30));
+        jPanel4.setPreferredSize(new java.awt.Dimension(30, 50));
+        add(jPanel4, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -211,8 +238,11 @@ public class LancaEsforcos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField txtEx;
     private javax.swing.JTextField txtEy;
     private javax.swing.JTextField txtMx;

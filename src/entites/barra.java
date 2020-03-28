@@ -37,7 +37,6 @@ public class barra {
         float aux;
         aux = (float) (Math.pow((diametro / 2), 2) * Math.PI);
         this.area = aux;
-        System.out.println("AREA: " + this.getArea());
     }
 
     /**

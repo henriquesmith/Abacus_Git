@@ -41,9 +41,6 @@ public class telaInicial extends javax.swing.JPanel {
         return btnAbaco;
     }
 
-    public JButton getBtnResults() {
-        return btnResults;
-    }
 
     @Override
     public Dimension getPreferredSize() {
@@ -58,6 +55,7 @@ public class telaInicial extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -69,12 +67,13 @@ public class telaInicial extends javax.swing.JPanel {
         btnProp = new javax.swing.JButton();
         btnConfig = new javax.swing.JButton();
         btnAbaco = new javax.swing.JButton();
-        btnResults = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setAlignmentX(10.0F);
         setAlignmentY(10.0F);
-        setPreferredSize(new java.awt.Dimension(600, 400));
+        setMinimumSize(new java.awt.Dimension(485, 400));
+        setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(485, 400));
         setVerifyInputWhenFocusTarget(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -117,7 +116,7 @@ public class telaInicial extends javax.swing.JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 556, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +132,7 @@ public class telaInicial extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 556, Short.MAX_VALUE)
+            .addGap(0, 485, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,27 +142,36 @@ public class telaInicial extends javax.swing.JPanel {
         add(jPanel5, java.awt.BorderLayout.PAGE_END);
 
         jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
         btnSecao.setBackground(new java.awt.Color(65, 63, 65));
         btnSecao.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
         btnSecao.setForeground(new java.awt.Color(0, 0, 0));
-        btnSecao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/secaoC.png"))); // NOI18N
+        btnSecao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/secaoP.png"))); // NOI18N
         btnSecao.setText("Lançar seção transversal  ");
         btnSecao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnSecao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSecao.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnSecao);
+        btnSecao.setMaximumSize(new java.awt.Dimension(300, 120));
+        btnSecao.setMinimumSize(new java.awt.Dimension(300, 120));
+        btnSecao.setPreferredSize(new java.awt.Dimension(300, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanel2.add(btnSecao, gridBagConstraints);
 
         btnEsforcos.setBackground(new java.awt.Color(65, 63, 65));
         btnEsforcos.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
         btnEsforcos.setForeground(new java.awt.Color(0, 0, 0));
         btnEsforcos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/esforcos.png"))); // NOI18N
-        btnEsforcos.setText("Lançar esforços solicitantes");
+        btnEsforcos.setText("Esforços solicitantes     ");
         btnEsforcos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEsforcos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEsforcos.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnEsforcos);
+        btnEsforcos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEsforcos.setMaximumSize(new java.awt.Dimension(300, 120));
+        btnEsforcos.setMinimumSize(new java.awt.Dimension(300, 120));
+        btnEsforcos.setPreferredSize(new java.awt.Dimension(300, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanel2.add(btnEsforcos, gridBagConstraints);
 
         btnProp.setBackground(new java.awt.Color(65, 63, 65));
         btnProp.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
@@ -172,8 +180,14 @@ public class telaInicial extends javax.swing.JPanel {
         btnProp.setText("Propriedades dos materiais");
         btnProp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnProp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnProp.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnProp);
+        btnProp.setMaximumSize(new java.awt.Dimension(300, 120));
+        btnProp.setMinimumSize(new java.awt.Dimension(300, 120));
+        btnProp.setPreferredSize(new java.awt.Dimension(300, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanel2.add(btnProp, gridBagConstraints);
 
         btnConfig.setBackground(new java.awt.Color(65, 63, 65));
         btnConfig.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
@@ -182,28 +196,31 @@ public class telaInicial extends javax.swing.JPanel {
         btnConfig.setText("Config. & Preferências   ");
         btnConfig.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnConfig.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnConfig.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnConfig);
+        btnConfig.setMaximumSize(new java.awt.Dimension(300, 120));
+        btnConfig.setMinimumSize(new java.awt.Dimension(300, 120));
+        btnConfig.setPreferredSize(new java.awt.Dimension(300, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanel2.add(btnConfig, gridBagConstraints);
 
         btnAbaco.setBackground(new java.awt.Color(65, 63, 65));
         btnAbaco.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
         btnAbaco.setForeground(new java.awt.Color(0, 0, 0));
         btnAbaco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gerar.png"))); // NOI18N
-        btnAbaco.setText("Gerar ábaco            ");
+        btnAbaco.setText("Gerar ábacos admensionais");
         btnAbaco.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnAbaco.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAbaco.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnAbaco);
-
-        btnResults.setBackground(new java.awt.Color(65, 63, 65));
-        btnResults.setFont(new java.awt.Font("RomanD", 1, 12)); // NOI18N
-        btnResults.setForeground(new java.awt.Color(0, 0, 0));
-        btnResults.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/results.png"))); // NOI18N
-        btnResults.setText("Visualizar resultados     ");
-        btnResults.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnResults.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnResults.setPreferredSize(new java.awt.Dimension(190, 120));
-        jPanel2.add(btnResults);
+        btnAbaco.setMaximumSize(new java.awt.Dimension(300, 120));
+        btnAbaco.setMinimumSize(new java.awt.Dimension(300, 120));
+        btnAbaco.setPreferredSize(new java.awt.Dimension(300, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanel2.add(btnAbaco, gridBagConstraints);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -214,7 +231,6 @@ public class telaInicial extends javax.swing.JPanel {
     private javax.swing.JButton btnConfig;
     private javax.swing.JButton btnEsforcos;
     private javax.swing.JButton btnProp;
-    private javax.swing.JButton btnResults;
     private javax.swing.JButton btnSecao;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -10,47 +10,55 @@ package entites;
  * @author Administrador
  */
 public class Esforcos {
-    private float Mxk =0f;
-    private float Myk =0f;
+
+    private float Mxk = 0f;
+    private float Myk = 0f;
     private float Nk = 0f;
     private float ex;
     private float ey;
-    private float Md =0f;
+    private float Md = 0f;
     private double tetaD = 0; // graus
-    
-    
-public Esforcos(float mx, float my, float nk){
-    this.Mxk = mx;
-    this.Myk = my;
-    this.Nk = nk;
-    gerarExcentricidades();
-    gerarMD();
-    gerarTeta();
 
-}
-//em graus
-private void gerarTeta(){
-    if(this.Md != 0f){
-        double teta;
-        teta = (float)(Math.acos(((this.Mxk/this.Md)))*(180/Math.PI));
-        this.tetaD = teta;
-        //teste
-        System.out.println("TetaD: "+ this.tetaD);
+    public Esforcos(float mx, float my, float nk) {
+        this.Mxk = mx;
+        this.Myk = my;
+        this.Nk = nk;
+        gerarExcentricidades();
+        gerarMD();
+        
+
     }
-}
+//em graus
+
+    private void gerarTeta() {
+        if (this.Md != 0) {
+            double teta;
+            teta = Math.acos(Mxk/Md);
+            // transformando em graus
+            this.tetaD = (teta * (180 / Math.PI));
+            System.out.println("têta: " + this.tetaD);
+        }
+    }
 // kN.m
-private void gerarMD(){
-    float md;
-    md = (float) Math.sqrt((double)Math.pow((double)Mxk, 2)+(double)Math.pow((double)Myk, 2));
-    this.Md = md;
-    // verificação
-    System.out.println("MD: "+ this.Md);
-}
+
+    private void gerarMD() {
+        float aux;
+        float md;
+        aux = (float) ((Math.pow(Mxk, 2)) + (Math.pow(Myk, 2)));
+        md = (float) Math.sqrt((double) aux);
+        System.out.println("");
+        System.out.println("Mx: " + this.Mxk + " My: " + this.Myk);
+        System.out.println("Valor MD: " + md);
+        this.Md = md;
+        gerarTeta();
+
+    }
 // in meters
-private void gerarExcentricidades(){
-    this.ex = (Mxk/Nk);
-    this.ey = (Myk/Nk);
-}
+
+    private void gerarExcentricidades() {
+        this.ex = (Mxk / Nk);
+        this.ey = (Myk / Nk);
+    }
 
     /**
      * @return the Mxk
@@ -100,5 +108,5 @@ private void gerarExcentricidades(){
     public double getTetaD() {
         return tetaD;
     }
-    
+
 }

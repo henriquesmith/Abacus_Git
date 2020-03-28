@@ -22,7 +22,7 @@ import views.telaInicial;
  * @author Administrador
  */
 public class telaInicialController {
-    
+
     private Materials materiais;
     private JFrame parent = null, frame;
     private telaInicial tela = null;
@@ -35,9 +35,9 @@ public class telaInicialController {
         this.parent = parent;
         tela = new telaInicial();
         init();
-        
+
     }
-    
+
     private void init() {
         tela.getBtnAbaco().addActionListener(e -> metodoIterativo());
         tela.getBtnConfig().addActionListener(e -> lancarCoeficientes());
@@ -51,7 +51,7 @@ public class telaInicialController {
         frame.setLocationRelativeTo(parent);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getFrame(), "Tem certeza que deseja sair?") == JOptionPane.OK_OPTION) {
@@ -61,29 +61,21 @@ public class telaInicialController {
             }
         });
         frame.setVisible(true);
-        
+
     }
-    
+
     private void abrirSecao(ActionEvent e) {
         secaoDrawController sdc = new secaoDrawController(frame);
-
-        if (sdc.getSecEnviar() == null) {
-            tela.getBtnEsforcos().setEnabled(false);
-            
-        } else {
-            tela.getBtnEsforcos().setEnabled(true);
-            secaoTransversal = sdc.getSecEnviar();
-
+        secaoTransversal = sdc.getSecEnviar();
+        if (secaoTransversal != null) {
             // Apenas para verificar se esta tudo certo! apos o termino do programa, será removido
             System.out.println("Qtd de vertices: " + secaoTransversal.getNumVertice());
             System.out.println("QTS de barras: " + secaoTransversal.getNumBars());
             System.out.println("centroide: " + secaoTransversal.getCentroide().getX() + ", " + secaoTransversal.getCentroide().getY());
             System.out.println("AREA: " + secaoTransversal.getArea());
             System.out.println("BArs AREA: " + secaoTransversal.getBars().getAreaBars());
-
-            
         }
-        
+
     }
 
     /**
@@ -92,15 +84,20 @@ public class telaInicialController {
     public JFrame getFrame() {
         return frame;
     }
-    
+
     private void lancarEsforcos() {
-        LancaEsforcosController lec = new LancaEsforcosController(frame);
-        if (lec.getEsforcos() != null) {
-            esforcos = lec.getEsforcos();
-            System.out.println("Esforcos: " + esforcos.getMxk());
+        if (this.secaoTransversal != null) {
+            LancaEsforcosController lec = new LancaEsforcosController(frame);
+            if (lec.getEsforcos() != null) {
+                esforcos = lec.getEsforcos();
+                System.out.println("Esforcos: " + esforcos.getMxk());
+            }
+        } else {
+            JOptionPane.showMessageDialog(frame, "Lance uma seção transversal! ", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
         }
     }
-    
+
     private void lancarMateriais() {
         MateriaisController mc = new MateriaisController(frame);
         if (mc.getMateriais() != null) {
@@ -109,36 +106,45 @@ public class telaInicialController {
             System.out.println("Def: " + materiais.getConcrete().getDeformacaoE0() + " eu: " + materiais.getConcrete().getDeformacaoEu());
 
             System.out.println("fcd: " + materiais.getConcrete().getFcd());
-            
+
             System.out.println("SigmaCD: " + materiais.getConcrete().getSigmacd());
             System.out.println("Concreto fck: " + materiais.getConcrete().getFck() + ", " + "Aço: " + materiais.getAco().getTypeAco() + "Ecs: " + materiais.getConcrete().getModuloElasticidade());
-            tela.getBtnConfig().setEnabled(true);
         }
-        
+
     }
 
     // terminar o code implemetation
     private void lancarCoeficientes() {
-        if(this.materiais != null){
-        CoeficientesViewController CVC = new CoeficientesViewController(frame, materiais);
-        this.materiais.setCoeficiente(CVC.getCoeficientes());
-        this.materiais.getAco().setFyd((float) materiais.getCoef().getGamaS());
-        this.materiais.getConcrete().setFcd((float) this.materiais.getCoef().getGamaC());
-        this.materiais.getConcrete().setSigmaCD();
-        
-        this.materiais.getAco().setDefAco(CVC.getEuAco());
-        this.esforcosCalculo = new Esforcos((float) (esforcos.getMxk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getMyk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getNk() * materiais.getCoef().getGamaEsforcos()));
-        
-        System.out.println("Fyd: " + materiais.getAco().getFyd());
-        // testando code
-        System.out.println("SigmaCD : " + materiais.getConcrete().getSigmacd());
-    } else{
-        
+        if (this.materiais != null && this.esforcos != null) {
+            CoeficientesViewController CVC = new CoeficientesViewController(frame, materiais);
+            this.materiais.setCoeficiente(CVC.getCoeficientes());
+            this.materiais.getAco().setFyd((float) materiais.getCoef().getGamaS());
+            this.materiais.getConcrete().setFcd((float) this.materiais.getCoef().getGamaC());
+            this.materiais.getConcrete().setSigmaCD();
+
+            this.materiais.getAco().setDefAco(CVC.getEuAco());
+            this.esforcosCalculo = new Esforcos((float) (esforcos.getMxk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getMyk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getNk() * materiais.getCoef().getGamaEsforcos()));
+
+            System.out.println("Fyd: " + materiais.getAco().getFyd());
+            // testando code
+            System.out.println("SigmaCD : " + materiais.getConcrete().getSigmacd());
+        } else if (this.materiais == null && this.esforcos == null) {
+            JOptionPane.showMessageDialog(frame, "Lance os esforços e os materiais da seção!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+        } else if (this.materiais == null) {
+            JOptionPane.showMessageDialog(frame, "Lance os materiais da seção!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        } else if (this.esforcos == null) {
+            JOptionPane.showMessageDialog(frame, "Lance os esforços da seção!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
         }
     }
-    
+
     private void metodoIterativo() {
-        viewAbacoController avc = new viewAbacoController(parent,this.secaoTransversal,this.esforcosCalculo,this.materiais);
+        if ( this.esforcosCalculo != null) {
+            viewAbacoController avc = new viewAbacoController(parent, this.secaoTransversal, this.esforcosCalculo, this.materiais);
+        } else {
+            JOptionPane.showMessageDialog(frame, "Lance os coeficientes  e configure suas preferências","Aviso",JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**

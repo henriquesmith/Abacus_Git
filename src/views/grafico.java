@@ -17,7 +17,6 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.internal.chartpart.ChartPart;
 import org.knowm.xchart.internal.chartpart.SelectionZoom;
 import org.knowm.xchart.internal.chartpart.components.ChartImage;
 import org.knowm.xchart.internal.chartpart.components.ChartLine;
@@ -32,7 +31,7 @@ import org.knowm.xchart.style.markers.SeriesMarkers;
  */
 public class grafico {
     private XChartPanel panel;
-    XYSeries serie;
+    private XYSeries serie;
     XYChart chart;
     SelectionZoom zm;
     ChartImage im;
@@ -41,7 +40,7 @@ public class grafico {
     
 
     public XChartPanel grafico(String Mx, String My, String title) {
-        chart = new XYChartBuilder().width(690).height(590).theme(Styler.ChartTheme.Matlab).title(title).xAxisTitle(Mx).yAxisTitle(My).build();
+        chart = new XYChartBuilder().width(595).height(595).theme(Styler.ChartTheme.Matlab).title(title).xAxisTitle(Mx).yAxisTitle(My).build();
         chart.getStyler().setPlotBackgroundColor(ChartColor.getAWTColor(ChartColor.WHITE));
         chart.getStyler().setPlotGridLinesColor(new Color(0, 0, 0));
         chart.getStyler().setChartBackgroundColor(Color.WHITE);
@@ -51,7 +50,6 @@ public class grafico {
         chart.getStyler().setChartTitleBoxBackgroundColor(Color.white);
         chart.getStyler().setChartTitleBoxVisible(false);
         chart.getStyler().setChartTitleBoxBorderColor(Color.black);
-        chart.getStyler().setPlotGridLinesVisible(true);
         chart.getStyler().setAxisTickMarkLength(5);
         chart.getStyler().setPlotMargin(0);
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
@@ -70,8 +68,11 @@ public class grafico {
         getPanel().setAutoscrolls(true);
         return getPanel();
     }
-    public void setCL(){
-        int width = 1;
+    public void setGrid(boolean ativar){
+         chart.getStyler().setPlotGridLinesVisible(ativar);
+    }
+    public void setCL(int largura){
+        int width = largura;
             BasicStroke stroke =
                 new BasicStroke(
                     width,
@@ -80,7 +81,7 @@ public class grafico {
                     10.0f,
                     new float[] {3.0f, 0.0f},
                     0.0f);
-            cl = new ChartLine(0.0,false,false);
+            cl = new ChartLine(0,false,false);
             cl.setColor(Color.BLACK);
             cl.setStroke(stroke);
             cl.init(panel);
@@ -93,10 +94,8 @@ public class grafico {
            
     }
     public void addSecao(Image pnl,double x, double y,boolean value){
-        im = new ChartImage(pnl,x,y,value);
+        im = new ChartImage(pnl,x,y,value);  
         im.init(this.panel);
-        
-        System.out.println("Lista: "+ chart.getPlotParts().size());
         getPanel().revalidate();
         getPanel().invalidate();
         getPanel().repaint();
@@ -114,9 +113,9 @@ public class grafico {
 
     public void setPoint(List<Float> Mx, List<Float> My) {
         serie = chart.addSeries("Esforcos solicitantes", My, My);
-        serie.setMarkerColor(Color.RED);
-        serie.setMarker(SeriesMarkers.DIAMOND);
-        serie.setLineStyle(SeriesLines.NONE);
+        getSerie().setMarkerColor(Color.RED);
+        getSerie().setMarker(SeriesMarkers.DIAMOND);
+        getSerie().setLineStyle(SeriesLines.NONE);
         getPanel().revalidate();
         getPanel().repaint();
     }
@@ -139,6 +138,7 @@ public class grafico {
                 My.add(my);
                 N.add(nd);
             }
+
             if (tetaD != 90 && tetaD != 0) {
                 serie = chart.addSeries("ω = " + String.format("%.2f", k), Mx, My);
                 chart.setXAxisTitle("μx");
@@ -155,41 +155,24 @@ public class grafico {
                 chart.setXAxisTitle("v");
                 chart.setYAxisTitle("μ");
             }
-            serie.setMarker(SeriesMarkers.NONE);
-            serie.setLineStyle(SeriesLines.SOLID);
-            serie.setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
-            serie.setLabel("ω = " + String.format("%.2f", k));
+            getSerie().setMarker(SeriesMarkers.NONE);
+            getSerie().setLineStyle(SeriesLines.SOLID);
+            getSerie().setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+            getSerie().setLabel("ω = " + String.format("%.2f", k));
+
 
         }
         getPanel().revalidate();
         getPanel().repaint();
     }
 
-    public void setAxis() {
-        double[] xData_xAxis = new double[]{serie.getXMin(), 0, serie.getXMax()};
-
-        double[] yData_xAxis = new double[]{0, 0, 0};
-
-        double[] xData_yAxis = new double[]{0, 0, 0};
-
-        double[] yData_yAxis = new double[]{serie.getYMin(), 0, serie.getYMax()};
-        XYSeries xaS = chart.addSeries("Axis X", xData_xAxis, yData_xAxis);
-        xaS.setMarker(SeriesMarkers.NONE);
-        xaS.setLineColor(Color.black);
-        XYSeries yaS = chart.addSeries("Axis Y", xData_yAxis, yData_yAxis);
-        yaS.setMarker(SeriesMarkers.NONE);
-        yaS.setLineColor(Color.black);
-        getPanel().revalidate();
-
-    }
-
-    public void setSeries(List<Float> Mx, List<Float> My, float taxa) {
+    public void setSeries(List<Float> Mx, List<Float> My, Float taxa) {
 
         serie = chart.addSeries("ω = " + String.format("%.2f", taxa), Mx, My);
-        serie.setMarker(SeriesMarkers.NONE);
-        serie.setLineStyle(SeriesLines.SOLID);
-        serie.setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
-        serie.setLabel("ω = " + String.format("%.2f", taxa));
+        getSerie().setMarker(SeriesMarkers.NONE);
+        getSerie().setLineStyle(SeriesLines.SOLID);
+        getSerie().setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
+        getSerie().setLabel("ω = " + String.format("%.2f", taxa));
         getPanel().revalidate();
         getPanel().repaint();
 
@@ -200,6 +183,13 @@ public class grafico {
      */
     public XChartPanel getPanel() {
         return panel;
+    }
+
+    /**
+     * @return the serie
+     */
+    public XYSeries getSerie() {
+        return serie;
     }
 
 }

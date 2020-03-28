@@ -38,86 +38,109 @@ public class NeutralLine {
         this.lambda = this.matRecebido.getConcrete().getLambda();
     }
 
-    public List<Esforcos> env_FCN(float v1, float v2, float As, float Alfa, float Alfa2) {
+    public List<Esforcos> env_FCN( float As, float Alfa, float Alfa2) {
         float area = this.secRecebida.getArea();
         float hx = this.secRecebida.getHx();
         float hy = this.secRecebida.getH();
         float sigma = this.matRecebido.getConcrete().getSigmacd() / 10;
         List<Esforcos> mo = new ArrayList<>();
-        float a = v1;
-        while (a <= v2) {
-            float N = a * (area * sigma);
-            float xLN = bissecant(0, 1000, Alfa, As, N,(float)0.002);
-            Esforcos e = moments(xLN, Alfa, As);
+        float xln = bissecant(0, 1000, Alfa, As, 0, (float) 0.002);
+        float d = xln;
+        while (d <= 1000) {
+            Esforcos e = moments(d, Alfa, As);
             mo.add(e);
-            a = (float) (a + 0.1);
+            d++;
         }
+        float d2 = 1000;
+        float xl = bissecant(0, 1000, Alfa2, As, 0, (float) 0.002);
+        while (d2 >= xl) {
+            Esforcos e = moments(d2, Alfa2, As);
+            mo.add(e);
 
+            d2--;
+
+        }
+        Esforcos s = moments(xl, Alfa2, As);
+        mo.add(s);
 
         return mo;
     }
 
-    public float inclinacaoLN(float alfaIni, float Nd, float atb, Esforcos esfS) {
-        double precisao = 0.001;
+    // Melhorar método
+    public float inclinacaoLN(float alfa1, float Nd, float atb, Esforcos esfS, float erro) {
+        double precisao = erro;
+        float aIni = alfa1;
         float ALFA;
-        double tetaR;
-        float alfa1 = alfaIni;
-        float N = Nd;
-        float Ab = atb;
-        Esforcos esf_S = esfS;
-        double tetaD = esf_S.getTetaD();
-        // verifica-se se nao é caso de flexocompressão NORMAL
-        if (tetaD == 0 || tetaD == 180) {
-            ALFA = (float) (tetaD - 90);
-        } else if (tetaD == 90 || tetaD == -90 || tetaD == 270) {
-            ALFA = (float) (tetaD - 90);
-        } else {
-            float xLN;
-            Esforcos esfR;
-            //primeiro calcula-se a profundidade da Ln de acordo com o angulo inicial
-            xLN = bissecant(0, 1000, alfa1, Ab, N, (float) 0.001);
-            //Encontro o par de momentos devido a LN calculada e o angulo
-            esfR = moments(xLN, alfa1, Ab);
-            //comparo a inclinaçao dos esforcos
-            tetaR = esfR.getTetaD();
-            float nextA = 0;
-            while (Math.abs((tetaR - tetaD)) > precisao) {
-                nextA = nextAlfa(alfa1, (float) tetaR, (float) tetaD);
-                System.out.println("");
-                System.out.println("Inclinação avaliada: " + nextA);
-                xLN = bissecant(0, 1000, nextA, Ab, N, (float) 0.001);
-                esfR = moments(xLN, nextA, Ab);
-                tetaR = esfR.getTetaD();
-                alfa1 = nextA;
-            }
-            ALFA = nextA;
+        float tetaD = (float) esfS.getTetaD();
+        float xln = bissecant(0, 1000, alfa1, atb, Nd, (float) precisao);
+        Esforcos e = moments(xln, alfa1, atb);
+        float tetaR = (float) e.getTetaD();
+        float nextA = 0;
+        while (Math.abs(tetaR - tetaD) > precisao) {
+            float next, x;
+            next = nextAlfa(aIni, tetaR, tetaD);
+            System.out.println(" ");
+            System.out.println("ALFA: " + next);
+            x = bissecant(0, 1000, next, atb, Nd, (float) precisao);
+            Esforcos es = moments(x, next, atb);
+            tetaR = (float) es.getTetaD();
+            System.out.println("");
+            System.out.println("tetaR = " + tetaR + " tetaD : " + tetaD);
+            aIni = next;
+            nextA = next;
         }
+
+        ALFA = nextA;
+
         return ALFA;
     }
 
     //Método que escolhe o proximo valor da inclinaçãod e alfa em graus
     private float nextAlfa(float alfaIni, float tetaR, float tetaD) {
         float nextA;
+        float an = 0;
         if (tetaR > tetaD) {
-            nextA = ((alfaIni + (90)) * (tetaD / tetaR)) - 90;
-        } else if (tetaR < tetaD) {
-            nextA = ((90 - tetaD) / (90 - tetaR)) * alfaIni;
+            if (tetaD > 0 && tetaD < 90) {
+                an = ((alfaIni + 90) * (tetaD / tetaR)) - 90;
+            }
+            if (tetaD > 90 && tetaD < 180) {
+                an = ((alfaIni + 180) * (tetaD / tetaR)) - 180;
+            }
+            if (tetaD > 180 && tetaD < 270) {
+                an = ((alfaIni + 270) * (tetaD / tetaR)) - 270;
+            }
+            if (tetaD > -90 && tetaD < 0) {
+                an = ((alfaIni + 90) * (tetaD / tetaR)) - 90;
+            }
         } else {
-            nextA = alfaIni;
+            if (tetaD > 0 && tetaD < 90) {
+                an = ((90 - tetaD) / (90 - tetaR)) * alfaIni;
+            }
+            if (tetaD > 90 && tetaD < 180) {
+                an = ((180 - tetaD) / (180 - tetaR)) * alfaIni;
+            }
+            if (tetaD > 180 && tetaD < 270) {
+                an = ((270 - tetaD) / (270 - tetaR)) * alfaIni;
+            }
+            if (tetaD > -90 && tetaD < 0) {
+                an = ((90 - tetaD) / (90 - tetaR)) * alfaIni;
+            }
+
         }
+        nextA = an;
 
         return nextA;
     }
 
-    public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd) {
+    public List<Esforcos> envoltoria(float a1, float a2, float atb, float Nd, float precisao) {
         float a;
         List<Esforcos> moR = new ArrayList<>();
         a = a1;
         float b;
         b = a2;
         float ln;
-        for (float i = a; i < b; i++) {
-            ln = bissecant(0, 1000, i, atb, Nd, (float) 0.002);
+        for (float i = a; i <= b; i++) {
+            ln = bissecant(0, 1000, i, atb, Nd, precisao);
             moR.add(moments(ln, i, atb));
 
         }
@@ -173,12 +196,17 @@ public class NeutralLine {
             if (p > 0) {
                 e0 = e1;
                 f_0 = comecar(e0, angulo, atb, Nd);
+
             } else {
                 eu = e1;
                 f_u = comecar(eu, angulo, atb, Nd);
+
             }
             e1 = ((e0 * f_u) - (eu * f_0)) / (f_u - f_0);
             f_e1 = comecar(e1, angulo, atb, Nd);
+            if (Math.abs(e0 - eu) < 0.001) {
+                break;
+            }
         }
         System.out.println("");
         System.out.println(" a profundidade da linha neutra é : " + e1);
@@ -196,9 +224,7 @@ public class NeutralLine {
         secaoTransversal secVCC;
         secaoTransversal secUnrot;
         Vertice staticsMoments;
-
         secRotate = rotate(this.getSecT(), alfa);
-        //mudei aqui em baixo
         domi = verifyDomain(x0, secRotate.getD(), secRotate.getH());
         deformacao(domi, secRotate, x0);
         secVCC = ACC(secRotate, x0);
@@ -253,8 +279,6 @@ public class NeutralLine {
         Mxdr = ((sx * sigma) + (barsArea / secRo.getBars().getBarras().size()) * (MxSoma)) / 100;
         Mydr = ((sy * sigma) + (barsArea / secRo.getBars().getBarras().size()) * (MySoma)) / 100;
         esf = new Esforcos(Mxdr, Mydr, Ndr);
-        System.out.println("");
-        System.out.println("Nd = " + esf.getNk() + " , Mxdr: " + esf.getMxk() + " , Mydr: " + esf.getMyk());
         return esf;
     }
 
@@ -274,17 +298,12 @@ public class NeutralLine {
             }
             deltax = b.getX() - a.getX();
             deltay = b.getY() - a.getY();
-            System.out.println("Dx: " + deltax + " &  Dy: " + deltay);
             sx += deltay * (3 * a.getX() * b.getX() + ((float) Math.pow(deltax, 2)));
             sy += deltax * (3 * a.getY() * b.getY() + ((float) Math.pow(deltay, 2)));
-            System.out.println("sx parcial: " + sx);
         }
         sx = sx / 6;
         sy = ((-1) * (sy / 6));
         momentosstaticos = new Vertice(sx, sy);
-
-        System.out.println("Sx: " + momentosstaticos.getX());
-        System.out.println("Sy: " + momentosstaticos.getY());
         return momentosstaticos;
 
     }
@@ -299,8 +318,6 @@ public class NeutralLine {
             float xL = x * (float) (Math.cos(angulo * (Math.PI / 180))) - y * (float) (Math.sin(angulo * (Math.PI / 180)));
             float yL = x * (float) (Math.sin(angulo * (Math.PI / 180))) + y * (float) (Math.cos(angulo * (Math.PI / 180)));
             Vertice vL = new Vertice(xL, yL);
-            System.out.println("");
-            System.out.println("VR: " + xL + "; " + yL);
             s.addVertice(vL);
         }
 
@@ -311,8 +328,6 @@ public class NeutralLine {
     private secaoTransversal ACC(secaoTransversal sec, float x0) {
         secaoTransversal secTc = new secaoTransversal();
         float yc = sec.getyMax() - x0 * this.lambda;
-        System.out.println(" ");
-        System.out.println("yc: " + yc + " lambda: " + this.getLambda() + " yMax: " + sec.getyMax());
         float deltaX, deltaY;
 
         for (int i = 0; i < sec.getVertices().size(); i++) {
@@ -337,20 +352,13 @@ public class NeutralLine {
                 if (b.getY() >= yc) {
                     secTc.addVertice(b);
                 }
-                System.out.println("lado " + (i + 1) + " faz intercepto");
             } else {
-                System.out.println("lado" + (i + 1) + " Nao faz intercepto");
                 if (b.getY() >= yc) {
                     secTc.addVertice(b);
                 }
             }
 
         }
-        for (int m = 0; m < secTc.getVertices().size(); m++) {
-            System.out.println("Vcc: " + secTc.getVertices().get(m).getX() + "; " + secTc.getVertices().get(m).getY());
-        }
-        System.out.println("tamanho: " + secTc.getVertices().size());
-        System.out.println("Area CC: " + secTc.getArea());
 
         return secTc;
     }
@@ -367,8 +375,6 @@ public class NeutralLine {
         } else {
             bar.setTensao(def * (ECS / 10));
         }
-        System.out.println("");
-        System.out.println("tensao kN/cm²: " + bar.getTensaoBarra());
 
     }
 
@@ -382,20 +388,15 @@ public class NeutralLine {
         float esi;
         for (int i = 0; i < secRot.getBars().getBarras().size(); i++) {
             float di = secRot.getBars().getBarras().get(i).getDi();
-            System.out.println("");
-            System.out.println("di : " + secRot.getBars().getBarras().get(i).getDi());
             if (dominio.getDominiosDeformacao() == 0) {
                 esi = (10 * ((x0 - di) / (d - x0))) / 1000;
                 secRot.getBars().getBarras().get(i).setDefbarra(esi);
-                System.out.println("deformacao: " + secRot.getBars().getBarras().get(i).getDefbarra());
             } else if (dominio.getDominiosDeformacao() == 1) {
                 esi = (eu * ((x0 - di) / x0)) / 1000;
                 secRot.getBars().getBarras().get(i).setDefbarra(esi);
-                System.out.println("deformacao: " + secRot.getBars().getBarras().get(i).getDefbarra());
             } else {
                 esi = (e0 * ((x0 - di) / (x0 - (k * h)))) / 1000;
                 secRot.getBars().getBarras().get(i).setDefbarra(esi);
-                System.out.println("deformacao: " + secRot.getBars().getBarras().get(i).getDefbarra());
             }
             tensao(secRot.getBars().getBarras().get(i), this.getMatRecebido().getAco().getFyd(), this.getMatRecebido().getAco().getEcs());
         }
@@ -411,9 +412,6 @@ public class NeutralLine {
         } else {
             dom = dominiosDeformacao.DOMINIO_5;
         }
-        System.out.println("");
-        System.out.println("dominio: " + dom.toString());
-        System.out.println("limite d: " + this.dLim);
 
         return dom;
     }
@@ -429,8 +427,6 @@ public class NeutralLine {
             float xL = x * (float) (Math.cos(angulo * (Math.PI / 180))) + y * (float) (Math.sin(angulo * (Math.PI / 180)));
             float yL = (-1) * x * (float) (Math.sin(angulo * (Math.PI / 180))) + y * (float) (Math.cos(angulo * (Math.PI / 180)));
             Vertice vL = new Vertice(xL, yL);
-            System.out.println("");
-            System.out.println("VR: " + xL + "; " + yL);
             s.addVertice(vL);
         }
         for (int i = 0; i < sec.getBars().getBarras().size(); i++) {
@@ -441,9 +437,6 @@ public class NeutralLine {
             float yL = (-1) * x * (float) (Math.sin(angulo * (Math.PI / 180))) + y * (float) (Math.cos(angulo * (Math.PI / 180)));
             barra bR = new barra(dia, xL, yL);
             b.addBarra(bR);
-            System.out.println("");
-            System.out.println("BR: " + xL + "; " + yL);
-
         }
         secRot = new secaoTransversal(s, b);
         return secRot;
@@ -455,8 +448,6 @@ public class NeutralLine {
         Barras bars = new Barras();
         for (int i = 0; i < sec.getVertices().size(); i++) {
             Vertice v = new Vertice(sec.getVertices().get(i).getX() - sec.getCentroide().getX(), sec.getVertices().get(i).getY() - sec.getCentroide().getY());
-            System.out.println("");
-            System.out.println("VT: " + v.getX() + " , " + v.getY());
             section.addVertice(v);
 
         }
@@ -464,12 +455,9 @@ public class NeutralLine {
             barra bT = new barra(sec.getBars().getBarras().get(j).getDiametro(), sec.getBars().getBarras().get(j).getX() - sec.getCentroide().getX(),
                     sec.getBars().getBarras().get(j).getY() - sec.getCentroide().getY());
             bars.addBarra(bT);
-            System.out.println("BT: " + bT.getX() + ", " + bT.getY() + " di : " + bT.getDiametro());
         }
         sec2 = new secaoTransversal(section, bars);
 
-        System.out.println("Area transladaded: " + sec2.getArea());
-        System.out.println("Area barras total: " + sec2.getBars().getAreaBars());
         return sec2;
     }
 

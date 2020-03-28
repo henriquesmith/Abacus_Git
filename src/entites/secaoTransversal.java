@@ -67,11 +67,9 @@ public class secaoTransversal {
         hs = yMax - yMin;
         this.h = hs;
         this.ymax = yMax;
-        System.out.println(" h: " + this.h);
         for (int i = 0; i < b.getBarras().size(); i++) {
             float ys = b.getBarras().get(i).getY();
             b.getBarras().get(i).setDi(yMax - ys);
-            System.out.println("di: " + b.getBarras().get(i).getDi());
         }
         float dt = 0;
         for (barra bs : b.getBarras()) {
@@ -80,8 +78,7 @@ public class secaoTransversal {
             }
         }
         this.d = dt;
-        System.out.println(" ");
-        System.out.println("d: " + d);
+
 
     }
 
@@ -98,7 +95,6 @@ public class secaoTransversal {
         if (index != null) {
             vertices.remove(index.intValue());
         } else {
-            System.out.println("Selecione primeiro um vértce a ser adicionado");
         }
         gerarArea();
         gerarCentroide();

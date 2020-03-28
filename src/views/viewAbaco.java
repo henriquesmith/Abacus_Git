@@ -6,8 +6,10 @@
 package views;
 
 import java.awt.Dimension;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /**
@@ -25,11 +27,11 @@ public class viewAbaco extends javax.swing.JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(1000, 600);
+        return new Dimension(930, 610);
     }
 
-    public JButton getBtn_Done() {
-        return this.btn_Done;
+    public JPanel getPanelS() {
+        return this.pnlS;
     }
 
     public JButton getBtn_FCO() {
@@ -109,14 +111,6 @@ public class viewAbaco extends javax.swing.JPanel {
         return this.btnFCN_X;
     }
 
-    public JTextField getTxtFcn_v1() {
-        return this.txtFcn_v1;
-    }
-
-    public JTextField getTxtFcn_v2() {
-        return this.txtFcn_V2;
-    }
-
     public JTextField getTxtFcn_w1() {
         return this.txtFcn_w1;
     }
@@ -133,6 +127,18 @@ public class viewAbaco extends javax.swing.JPanel {
         return this.jPanelInicial;
     }
 
+    public JRadioButton getButton0() {
+        return this.radio0;
+    }
+
+    public JRadioButton getButton90() {
+        return this.radio90;
+    }
+
+    public ButtonGroup getGrup() {
+        return this.btnGrup;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,6 +149,7 @@ public class viewAbaco extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        btnGrup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -164,14 +171,12 @@ public class viewAbaco extends javax.swing.JPanel {
         txtW2 = new javax.swing.JTextField();
         btnAbaco = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        txtFcn_v1 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        txtFcn_V2 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtFcn_w1 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         txtFcn_w2 = new javax.swing.JTextField();
+        radio0 = new javax.swing.JRadioButton();
+        radio90 = new javax.swing.JRadioButton();
         btn_FCN_GO = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -183,30 +188,40 @@ public class viewAbaco extends javax.swing.JPanel {
         btn_enV = new javax.swing.JButton();
         btnFCN_X = new javax.swing.JButton();
         btn_FCO = new javax.swing.JButton();
-        btn_Done = new javax.swing.JButton();
+        pnlS = new javax.swing.JPanel();
         jPanelGraficos = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
         jPanelInicial = new javax.swing.JPanel();
         jPanelAbaco = new javax.swing.JPanel();
         jPEnvoltoria = new javax.swing.JPanel();
         JPEnvN_X = new javax.swing.JPanel();
 
-        setPreferredSize(new java.awt.Dimension(1000, 600));
+        setBackground(new java.awt.Color(65, 63, 65));
+        setMaximumSize(new java.awt.Dimension(930, 610));
+        setMinimumSize(new java.awt.Dimension(930, 610));
+        setPreferredSize(new java.awt.Dimension(930, 610));
         setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBackground(new java.awt.Color(65, 63, 65));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 600));
+        jPanel1.setMinimumSize(new java.awt.Dimension(190, 600));
+        jPanel1.setPreferredSize(new java.awt.Dimension(190, 600));
         jPanel1.setRequestFocusEnabled(false);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Envoltória"));
+        jPanel3.setBackground(new java.awt.Color(65, 63, 65));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Envoltória de momentos"));
+        jPanel3.setForeground(new java.awt.Color(0, 0, 0));
         jPanel3.setMinimumSize(new java.awt.Dimension(195, 195));
         jPanel3.setPreferredSize(new java.awt.Dimension(195, 195));
 
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Normal reduzida (v):");
 
         txtV.setMinimumSize(new java.awt.Dimension(50, 24));
         txtV.setPreferredSize(new java.awt.Dimension(50, 24));
 
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Tax. Armadura (w):");
         jLabel2.setMaximumSize(new java.awt.Dimension(113, 16));
         jLabel2.setMinimumSize(new java.awt.Dimension(113, 16));
@@ -222,13 +237,15 @@ public class viewAbaco extends javax.swing.JPanel {
             }
         });
 
-        jLabel9.setText("Mxd,s:");
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Mxd:");
 
         txtUxS.setEditable(false);
         txtUxS.setMinimumSize(new java.awt.Dimension(46, 24));
         txtUxS.setPreferredSize(new java.awt.Dimension(46, 24));
 
-        jLabel10.setText("Myd,s:");
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Myd:");
 
         txtUyS.setEditable(false);
         txtUyS.setMinimumSize(new java.awt.Dimension(46, 24));
@@ -252,15 +269,15 @@ public class viewAbaco extends javax.swing.JPanel {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtUxS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtUyS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtUyS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUxS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEnvoltoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnEnvoltoria)))
                 .addGap(25, 25, 25))
         );
         jPanel3Layout.setVerticalGroup(
@@ -290,10 +307,12 @@ public class viewAbaco extends javax.swing.JPanel {
 
         jPanel1.add(jPanel3, new java.awt.GridBagConstraints());
 
+        jPanel4.setBackground(new java.awt.Color(65, 63, 65));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Abaco FCO"));
         jPanel4.setMinimumSize(new java.awt.Dimension(195, 195));
         jPanel4.setPreferredSize(new java.awt.Dimension(195, 195));
 
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText(" Normal reduzida V:");
         jLabel4.setMaximumSize(new java.awt.Dimension(113, 16));
         jLabel4.setMinimumSize(new java.awt.Dimension(113, 16));
@@ -302,13 +321,16 @@ public class viewAbaco extends javax.swing.JPanel {
         txtvarV.setMinimumSize(new java.awt.Dimension(50, 24));
         txtvarV.setPreferredSize(new java.awt.Dimension(50, 24));
 
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Variação da tax. de armadura");
 
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("De");
 
         txtW1.setMinimumSize(new java.awt.Dimension(30, 24));
         txtW1.setPreferredSize(new java.awt.Dimension(30, 24));
 
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("à");
 
         txtW2.setMinimumSize(new java.awt.Dimension(30, 24));
@@ -316,17 +338,32 @@ public class viewAbaco extends javax.swing.JPanel {
 
         btnAbaco.setText("GO");
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("FCN"));
+        jPanel6.setBackground(new java.awt.Color(65, 63, 65));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Abaco FCN"));
+        jPanel6.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel11.setText("v:");
-
-        jLabel12.setText("a");
-
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("w:");
 
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("a");
 
+        radio0.setBackground(new java.awt.Color(65, 63, 65));
+        radio0.setForeground(new java.awt.Color(0, 0, 0));
+        radio0.setText(" 0°");
+        radio0.setPreferredSize(new java.awt.Dimension(50, 23));
+
+        radio90.setBackground(new java.awt.Color(65, 63, 65));
+        radio90.setForeground(new java.awt.Color(0, 0, 0));
+        radio90.setText("-90°");
+        radio90.setPreferredSize(new java.awt.Dimension(50, 23));
+
         btn_FCN_GO.setText("GO");
+        btn_FCN_GO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_FCN_GOActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -334,48 +371,39 @@ public class viewAbaco extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtFcn_v1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFcn_V2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtFcn_w1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)
+                        .addGap(5, 5, 5)
+                        .addComponent(txtFcn_w1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(radio0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(radio90, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_FCN_GO)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtFcn_V2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel12)
-                        .addComponent(txtFcn_v1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFcn_w1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4))))
-            .addComponent(btn_FCN_GO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radio0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(radio90, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(txtFcn_w2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFcn_w1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addGap(12, 12, 12))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addComponent(btn_FCN_GO, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -401,7 +429,9 @@ public class viewAbaco extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(btnAbaco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -420,7 +450,7 @@ public class viewAbaco extends javax.swing.JPanel {
                     .addComponent(txtW2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAbaco))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -429,10 +459,13 @@ public class viewAbaco extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         jPanel1.add(jPanel4, gridBagConstraints);
 
+        jPanel5.setBackground(new java.awt.Color(65, 63, 65));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Dimensionar"));
+        jPanel5.setForeground(new java.awt.Color(0, 0, 0));
         jPanel5.setMinimumSize(new java.awt.Dimension(195, 195));
         jPanel5.setPreferredSize(new java.awt.Dimension(195, 195));
 
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("xLN (cm): ");
 
         btnDim.setText("Dimensionar");
@@ -441,6 +474,7 @@ public class viewAbaco extends javax.swing.JPanel {
         txtProfundidade.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtProfundidade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Inclinação alfa (°): ");
 
         txtInclinacao.setEditable(false);
@@ -451,9 +485,9 @@ public class viewAbaco extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnDim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,11 +497,11 @@ public class viewAbaco extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel7)))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtProfundidade, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(txtInclinacao))))
-                .addGap(18, 18, 18))
+                            .addComponent(txtProfundidade)
+                            .addComponent(txtInclinacao, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,9 +525,10 @@ public class viewAbaco extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.LINE_START);
 
+        jPanel2.setBackground(new java.awt.Color(65, 63, 65));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setMinimumSize(new java.awt.Dimension(100, 14));
-        jPanel2.setPreferredSize(new java.awt.Dimension(100, 600));
+        jPanel2.setMinimumSize(new java.awt.Dimension(95, 14));
+        jPanel2.setPreferredSize(new java.awt.Dimension(130, 600));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 40));
 
         btn_enV.setText("ENV");
@@ -508,63 +543,118 @@ public class viewAbaco extends javax.swing.JPanel {
         btn_FCO.setPreferredSize(new java.awt.Dimension(77, 100));
         jPanel2.add(btn_FCO);
 
-        btn_Done.setText("FINISH");
-        btn_Done.setPreferredSize(new java.awt.Dimension(77, 100));
-        jPanel2.add(btn_Done);
+        pnlS.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlS.setMinimumSize(new java.awt.Dimension(130, 130));
+
+        javax.swing.GroupLayout pnlSLayout = new javax.swing.GroupLayout(pnlS);
+        pnlS.setLayout(pnlSLayout);
+        pnlSLayout.setHorizontalGroup(
+            pnlSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 130, Short.MAX_VALUE)
+        );
+        pnlSLayout.setVerticalGroup(
+            pnlSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 130, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(pnlS);
 
         add(jPanel2, java.awt.BorderLayout.LINE_END);
 
+        jPanelGraficos.setBackground(new java.awt.Color(65, 63, 65));
         jPanelGraficos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelGraficos.setMaximumSize(new java.awt.Dimension(605, 605));
+        jPanelGraficos.setMinimumSize(new java.awt.Dimension(605, 605));
+        jPanelGraficos.setOpaque(false);
+        jPanelGraficos.setPreferredSize(new java.awt.Dimension(605, 605));
         jPanelGraficos.setLayout(new java.awt.CardLayout());
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(605, 605));
+        jPanel7.setMinimumSize(new java.awt.Dimension(605, 605));
+        jPanel7.setPreferredSize(new java.awt.Dimension(605, 605));
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 606, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 606, Short.MAX_VALUE)
+        );
+
+        jPanelGraficos.add(jPanel7, "card6");
+
+        jPanelInicial.setBackground(new java.awt.Color(65, 63, 65));
+        jPanelInicial.setMaximumSize(new java.awt.Dimension(605, 605));
+        jPanelInicial.setMinimumSize(new java.awt.Dimension(605, 605));
+        jPanelInicial.setOpaque(false);
+        jPanelInicial.setPreferredSize(new java.awt.Dimension(605, 605));
 
         javax.swing.GroupLayout jPanelInicialLayout = new javax.swing.GroupLayout(jPanelInicial);
         jPanelInicial.setLayout(jPanelInicialLayout);
         jPanelInicialLayout.setHorizontalGroup(
             jPanelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
         jPanelInicialLayout.setVerticalGroup(
             jPanelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
 
         jPanelGraficos.add(jPanelInicial, "ini");
+
+        jPanelAbaco.setBackground(new java.awt.Color(65, 63, 65));
+        jPanelAbaco.setMaximumSize(new java.awt.Dimension(605, 605));
+        jPanelAbaco.setMinimumSize(new java.awt.Dimension(605, 605));
+        jPanelAbaco.setPreferredSize(new java.awt.Dimension(605, 605));
 
         javax.swing.GroupLayout jPanelAbacoLayout = new javax.swing.GroupLayout(jPanelAbaco);
         jPanelAbaco.setLayout(jPanelAbacoLayout);
         jPanelAbacoLayout.setHorizontalGroup(
             jPanelAbacoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
         jPanelAbacoLayout.setVerticalGroup(
             jPanelAbacoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
 
         jPanelGraficos.add(jPanelAbaco, "abaco");
+
+        jPEnvoltoria.setBackground(new java.awt.Color(65, 63, 65));
+        jPEnvoltoria.setMaximumSize(new java.awt.Dimension(605, 605));
+        jPEnvoltoria.setMinimumSize(new java.awt.Dimension(605, 605));
+        jPEnvoltoria.setPreferredSize(new java.awt.Dimension(605, 605));
 
         javax.swing.GroupLayout jPEnvoltoriaLayout = new javax.swing.GroupLayout(jPEnvoltoria);
         jPEnvoltoria.setLayout(jPEnvoltoriaLayout);
         jPEnvoltoriaLayout.setHorizontalGroup(
             jPEnvoltoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
         jPEnvoltoriaLayout.setVerticalGroup(
             jPEnvoltoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
 
         jPanelGraficos.add(jPEnvoltoria, "envoltoria");
+
+        JPEnvN_X.setBackground(new java.awt.Color(65, 63, 65));
+        JPEnvN_X.setMaximumSize(new java.awt.Dimension(605, 605));
+        JPEnvN_X.setMinimumSize(new java.awt.Dimension(605, 605));
+        JPEnvN_X.setPreferredSize(new java.awt.Dimension(605, 605));
 
         javax.swing.GroupLayout JPEnvN_XLayout = new javax.swing.GroupLayout(JPEnvN_X);
         JPEnvN_X.setLayout(JPEnvN_XLayout);
         JPEnvN_XLayout.setHorizontalGroup(
             JPEnvN_XLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
         JPEnvN_XLayout.setVerticalGroup(
             JPEnvN_XLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 606, Short.MAX_VALUE)
         );
 
         jPanelGraficos.add(JPEnvN_X, "nx");
@@ -576,6 +666,10 @@ public class viewAbaco extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEnvoltoriaActionPerformed
 
+    private void btn_FCN_GOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FCN_GOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_FCN_GOActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPEnvN_X;
@@ -583,14 +677,12 @@ public class viewAbaco extends javax.swing.JPanel {
     private javax.swing.JButton btnDim;
     private javax.swing.JButton btnEnvoltoria;
     private javax.swing.JButton btnFCN_X;
-    private javax.swing.JButton btn_Done;
+    private javax.swing.ButtonGroup btnGrup;
     private javax.swing.JButton btn_FCN_GO;
     private javax.swing.JButton btn_FCO;
     private javax.swing.JButton btn_enV;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -608,11 +700,13 @@ public class viewAbaco extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanelAbaco;
     private javax.swing.JPanel jPanelGraficos;
     private javax.swing.JPanel jPanelInicial;
-    private javax.swing.JTextField txtFcn_V2;
-    private javax.swing.JTextField txtFcn_v1;
+    private javax.swing.JPanel pnlS;
+    private javax.swing.JRadioButton radio0;
+    private javax.swing.JRadioButton radio90;
     private javax.swing.JTextField txtFcn_w1;
     private javax.swing.JTextField txtFcn_w2;
     private javax.swing.JTextField txtInclinacao;
