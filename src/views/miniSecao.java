@@ -15,9 +15,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.Toolkit;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -155,8 +153,8 @@ public final class miniSecao extends JPanel {
         for (barra b : bars) {
             drawPoint(gd2, b.getX(), b.getY());
         }
-        gd2.setFont(new Font("Tahoma", Font.BOLD, 12));
-        gd2.drawString("δ = " + tal, vertices.get(0).getX() -15, vertices.get(vertices.size() -1).getY() - 10);
+        gd2.setFont(new Font("Tahoma", Font.BOLD, 10));
+        gd2.drawString("δ = " + tal, vertices.get(0).getX() -15, vertices.get(0).getY() + 10);
         gd2.dispose();
         
 

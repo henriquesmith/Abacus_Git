@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 /**
  *
@@ -76,7 +75,8 @@ public class barADD extends javax.swing.JPanel {
         add(jLabel4, gridBagConstraints);
 
         JComboDiametro.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        JComboDiametro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "5.0", "6.3", "8.0", "10.0", "12.5", "16.0", "20.0", "22.5", "25.0" }));
+        JComboDiametro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5.0", "6.3", "8.0", "10.0", "12.5", "16.0", "20.0", "22.5", "25.0", "32.0" }));
+        JComboDiametro.setSelectedIndex(-1);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 0, 0);
@@ -126,10 +126,10 @@ public class barADD extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(2, 0, 0, 0);
         add(txtCoordY, gridBagConstraints);
 
+        btnLancarB.setBackground(new java.awt.Color(69, 73, 74));
         btnLancarB.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        btnLancarB.setForeground(new java.awt.Color(255, 255, 255));
         btnLancarB.setText("Lançar barra");
-        btnLancarB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(60, 63, 65), new java.awt.Color(60, 63, 65), null, null));
-        btnLancarB.setBorderPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;

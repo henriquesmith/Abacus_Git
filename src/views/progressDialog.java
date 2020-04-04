@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -30,18 +29,13 @@ public class progressDialog extends JDialog {
     private progressDialogListener pdListener;
 
     public progressDialog(Window parent) {
-        super(parent, "Progresso", ModalityType.APPLICATION_MODAL);
+        super(parent, "Processamento dos dados", ModalityType.APPLICATION_MODAL);
         btn_Cancel = new JButton("Cancelar");
-        btn_Cancel.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (pdListener != null) {
-                    pdListener.ProgressBarcanceled();
-
-                }
+        btn_Cancel.addActionListener((ActionEvent e) -> {
+            if (pdListener != null) {
+                pdListener.ProgressBarcanceled();
+                
             }
-
         });
         progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
@@ -66,17 +60,13 @@ public class progressDialog extends JDialog {
         });
         add(progressBar);
         add(btn_Cancel);
-        btn_Cancel.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (pdListener != null) {
-                    pdListener.ProgressBarcanceled();
-                }
+        btn_Cancel.addActionListener((ActionEvent e) -> {
+            if (pdListener != null) {
+                pdListener.ProgressBarcanceled();
             }
-
         });
         this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        btn_Cancel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         pack();
         setLocationRelativeTo(parent);
     }

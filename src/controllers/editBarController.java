@@ -9,7 +9,6 @@ import entites.barra;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import views.editBar;
 
 /**
@@ -63,7 +62,6 @@ public class editBarController {
         barraE.setX(x);
         barraE.setY(y);
         dialog.setVisible(false);
-        System.out.println("diametro novo: "+ barraE.getDiametro());
         
     }
 

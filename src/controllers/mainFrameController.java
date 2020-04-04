@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -18,7 +19,7 @@ import views.mainFrame;
  * @author Administrador
  */
 public class mainFrameController {
-    private mainFrame mf;
+    private final mainFrame mf;
     
     public mainFrameController() {
         mf = new mainFrame();
@@ -26,7 +27,9 @@ public class mainFrameController {
         init();
     }
     private void init(){
+        mf.getBtn_About().addActionListener(e-> info());
         mf.getBntNew().addActionListener(e -> Start(e));
+        mf.getbtn_Contato().addActionListener(e -> contato());
         mf.setTitle("ABACUS");
         
         //Alterado pois a aplicação não estava finalização ao fechar as janelas
@@ -44,11 +47,20 @@ public class mainFrameController {
         mf.setVisible(true);
     
     }
+    private void contato(){
+        CardLayout cl = (CardLayout) mf.getPanel().getLayout();
+        cl.show(mf.getPanel(), "contato");
+    }
     private void Start(ActionEvent e){
-       
+               CardLayout cl = (CardLayout) mf.getPanel().getLayout();
+        cl.show(mf.getPanel(), "ini");
      telaInicialController tic = new telaInicialController(mf);
      
      mf.setVisible(false);
     
+    }
+    private void info(){
+    CardLayout cl =   (CardLayout) mf.getPanel().getLayout();
+    cl.show(mf.getPanel(), "infos");
     }
 }

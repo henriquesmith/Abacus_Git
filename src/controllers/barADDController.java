@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import views.barADD;
 
@@ -51,9 +50,9 @@ public class barADDController {
     }
 
     private void addBar(ActionEvent e) {
-        if (view.getJComboDiametro().getSelectedIndex() != 0 || view.getTxtCoordX().getText().isEmpty() == false || view.getTxtCoordY().getText().isEmpty() == false) {
+        if (view.getJComboDiametro().getSelectedIndex() != -1 || view.getTxtCoordX().getText().isEmpty() == false || view.getTxtCoordY().getText().isEmpty() == false) {
 
-            if (view.getJComboDiametro().getSelectedIndex() == 0) {
+            if (view.getJComboDiametro().getSelectedIndex() == -1) {
                 JOptionPane.showMessageDialog(dialog, "Por favor, selecione um diâmetro válido", "Aviso", JOptionPane.ERROR_MESSAGE);
             } else {
                 float diametro, x, y;

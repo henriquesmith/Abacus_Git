@@ -33,10 +33,11 @@ public class Esforcos {
     private void gerarTeta() {
         if (this.Md != 0) {
             double teta;
-            teta = Math.acos(Mxk/Md);
+            teta = Math.atan2(Myk, Mxk);
             // transformando em graus
             this.tetaD = (teta * (180 / Math.PI));
-            System.out.println("têta: " + this.tetaD);
+           // System.out.println("Teta: "+ tetaD);
+
         }
     }
 // kN.m
@@ -46,9 +47,6 @@ public class Esforcos {
         float md;
         aux = (float) ((Math.pow(Mxk, 2)) + (Math.pow(Myk, 2)));
         md = (float) Math.sqrt((double) aux);
-        System.out.println("");
-        System.out.println("Mx: " + this.Mxk + " My: " + this.Myk);
-        System.out.println("Valor MD: " + md);
         this.Md = md;
         gerarTeta();
 

@@ -8,11 +8,9 @@ package controllers;
 import entites.Vertice;
 import java.awt.Color;
 import java.awt.Dialog;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import views.verticesCoordenates;
 

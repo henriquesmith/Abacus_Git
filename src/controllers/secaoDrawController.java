@@ -32,11 +32,11 @@ import views.secaoDraw;
 public class secaoDrawController {
 
     private Barras bars = new Barras();
-    private areaDesenho draw =null;
+    private areaDesenho draw = null;
     private secaoTransversal sec = new secaoTransversal();
     private secaoDraw secView = null;
     private JDialog frame; //Alterado para JDialog para fazer o controle por modais
-    private JFrame parent= null;
+    private JFrame parent = null;
     private secaoTransversal secEnviar;
 
     public secaoDrawController(JFrame parent) {
@@ -94,7 +94,7 @@ public class secaoDrawController {
             @Override
             public void windowClosing(WindowEvent evt) {
                 if (JOptionPane.showConfirmDialog(frame, "Tem certeza que deseja sair ?") == JOptionPane.OK_OPTION) {
-                    
+
                     frame.setVisible(false);
                     parent.setVisible(true);
                 }
@@ -196,19 +196,31 @@ public class secaoDrawController {
 // parei aqui 28/01 P.S: adiconar no desenho as barras lançadas
 
     private void addBars(ActionEvent e) {
+        boolean condicional = false;
         if (sec.getVertices().isEmpty() == true) {
             JOptionPane.showMessageDialog(frame, "Antes de lançar uma barra, lance primeiramente \n os vértices da seção!", "Importante", JOptionPane.INFORMATION_MESSAGE);
-
         } else {
             barADDController bac = new barADDController(frame);
             barra b = bac.getBarra();
             if (b != null) {
+                for (barra bs : bars.getBarras()) {
+                    if(bs.getX() == b.getX() && bs.getY() == b.getY()){
+                        condicional = true;
+                    }
+                }
+            }
+            if (b != null && condicional == false) {
                 bars.addBarra(b);
                 draw.updateBarsList(bars.getBarras());
                 DefaultListModel md = (DefaultListModel) secView.getJLBars().getModel();
                 md.addElement("B[x;y]: [" + b.getX() + ";" + b.getY() + "]  Ø: " + b.getDiametro());
                 CardLayout cl = (CardLayout) secView.getJPLists().getLayout();
                 cl.show(secView.getJPLists(), "listas");
+            } else {
+                if (condicional == true) {
+                    JOptionPane.showMessageDialog(frame, "Já existe uma barra nesta posição!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+                }
             }
         }
     }
@@ -233,7 +245,6 @@ public class secaoDrawController {
             draw.updateBarsList(bars.getBarras());
             DefaultListModel md = (DefaultListModel) secView.getJLBars().getModel();
             md.setElementAt("B[x;y]: [" + bars.getBarras().get(secView.getJLBars().getSelectedIndex()).getX() + ";" + bars.getBarras().get(secView.getJLBars().getSelectedIndex()).getY() + "]  Ø: " + bars.getBarras().get(secView.getJLBars().getSelectedIndex()).getDiametro(), secView.getJLBars().getSelectedIndex());
-            System.out.println("tamanho list: " + bars.getBarras().size());
         } else {
             JOptionPane.showMessageDialog(frame, "Selecione uma barra da lista", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
@@ -281,7 +292,7 @@ public class secaoDrawController {
             }
 
         } else {
-           
+
             JOptionPane.showMessageDialog(frame, "Seção inválida! Verifique a quantidade de vértices e barras e a area da seção", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }

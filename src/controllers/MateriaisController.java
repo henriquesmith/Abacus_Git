@@ -12,7 +12,6 @@ import entites.tipoAco;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import views.Materiais;
@@ -82,10 +81,10 @@ public class MateriaisController {
         if (view.getJCkeckEcs().isSelected() == true) {
             if(view.getTxtEcs().getText().isEmpty() == false){
             concreto.setModuloElasticidade(Float.parseFloat(view.getTxtEcs().getText()));
-            System.out.println("ECS novo: " + concreto.getModuloElasticidade());
+           // System.out.println("ECS novo: " + concreto.getModuloElasticidade());
             }else{
-                System.out.println("Dado Inválido");
-                System.out.println("Ecs não mudado: "+ concreto.getModuloElasticidade());
+               // System.out.println("Dado Inválido");
+               // System.out.println("Ecs não mudado: "+ concreto.getModuloElasticidade());
             }
             
         }
@@ -108,8 +107,8 @@ public class MateriaisController {
             if (acoType.getTipoAco() > 0) {
                 aco = new Aco(acoType, Float.parseFloat(view.getTxtEAco().getText()));
                 //vai ser removido depois - apenas por questao de verificação de funcionamento
-                System.out.println("Aço: " + acoType.toString() + " fyk: " + acoType.getTipoAco());
-                System.out.println("E aco: " + aco.getEcs() + "Fyk a: " + aco.getFyk() + " tipo: " + aco.getTypeAco());
+               // System.out.println("Aço: " + acoType.toString() + " fyk: " + acoType.getTipoAco());
+              //  System.out.println("E aco: " + aco.getEcs() + "Fyk a: " + aco.getFyk() + " tipo: " + aco.getTypeAco());
                 if (aco != null && concreto != null) {
                     view.getBtnConfirmar().setEnabled(true);
                 }
@@ -121,7 +120,7 @@ public class MateriaisController {
         if (aco != null && concreto != null) {
             materiais = new Materials(concreto, aco);
             //verificação apenas
-            System.out.println("Concreto Mpa: " + materiais.getConcrete().getFck() + "Aco fyk: " + materiais.getAco().getFyk() + "tipoAco: " + materiais.getAco().getTypeAco());
+            //System.out.println("Concreto Mpa: " + materiais.getConcrete().getFck() + "Aco fyk: " + materiais.getAco().getFyk() + "tipoAco: " + materiais.getAco().getTypeAco());
             frame.setVisible(false);
             parent.setVisible(true);
         }

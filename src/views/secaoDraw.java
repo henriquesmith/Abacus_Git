@@ -155,16 +155,19 @@ public class secaoDraw extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         jPLists.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        jPLists.setPreferredSize(new java.awt.Dimension(200, 440));
+        jPLists.setMinimumSize(new java.awt.Dimension(175, 498));
+        jPLists.setPreferredSize(new java.awt.Dimension(175, 498));
         jPLists.setLayout(new java.awt.CardLayout());
 
         jPanelEntrada.setBackground(new java.awt.Color(65, 63, 65));
+        jPanelEntrada.setMinimumSize(new java.awt.Dimension(175, 498));
+        jPanelEntrada.setPreferredSize(new java.awt.Dimension(175, 498));
 
         javax.swing.GroupLayout jPanelEntradaLayout = new javax.swing.GroupLayout(jPanelEntrada);
         jPanelEntrada.setLayout(jPanelEntradaLayout);
         jPanelEntradaLayout.setHorizontalGroup(
             jPanelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
+            .addGap(0, 175, Short.MAX_VALUE)
         );
         jPanelEntradaLayout.setVerticalGroup(
             jPanelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,6 +176,8 @@ public class secaoDraw extends javax.swing.JPanel {
 
         jPLists.add(jPanelEntrada, "entrada");
 
+        jPanelListas.setMinimumSize(new java.awt.Dimension(175, 498));
+        jPanelListas.setPreferredSize(new java.awt.Dimension(175, 498));
         jPanelListas.setLayout(new java.awt.GridLayout(2, 1));
 
         jLVertices.setBorder(javax.swing.BorderFactory.createTitledBorder("Vértices"));
@@ -379,7 +384,7 @@ public class secaoDraw extends javax.swing.JPanel {
         JPanelDrawArea.setLayout(JPanelDrawAreaLayout);
         JPanelDrawAreaLayout.setHorizontalGroup(
             JPanelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 598, Short.MAX_VALUE)
+            .addGap(0, 609, Short.MAX_VALUE)
         );
         JPanelDrawAreaLayout.setVerticalGroup(
             JPanelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

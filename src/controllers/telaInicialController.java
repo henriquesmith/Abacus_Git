@@ -7,7 +7,6 @@ package controllers;
 
 import entites.Esforcos;
 import entites.Materials;
-import entites.NeutralLine;
 import entites.secaoTransversal;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -67,14 +66,8 @@ public class telaInicialController {
     private void abrirSecao(ActionEvent e) {
         secaoDrawController sdc = new secaoDrawController(frame);
         secaoTransversal = sdc.getSecEnviar();
-        if (secaoTransversal != null) {
-            // Apenas para verificar se esta tudo certo! apos o termino do programa, será removido
-            System.out.println("Qtd de vertices: " + secaoTransversal.getNumVertice());
-            System.out.println("QTS de barras: " + secaoTransversal.getNumBars());
-            System.out.println("centroide: " + secaoTransversal.getCentroide().getX() + ", " + secaoTransversal.getCentroide().getY());
-            System.out.println("AREA: " + secaoTransversal.getArea());
-            System.out.println("BArs AREA: " + secaoTransversal.getBars().getAreaBars());
-        }
+
+        
 
     }
 
@@ -90,7 +83,6 @@ public class telaInicialController {
             LancaEsforcosController lec = new LancaEsforcosController(frame);
             if (lec.getEsforcos() != null) {
                 esforcos = lec.getEsforcos();
-                System.out.println("Esforcos: " + esforcos.getMxk());
             }
         } else {
             JOptionPane.showMessageDialog(frame, "Lance uma seção transversal! ", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -102,13 +94,6 @@ public class telaInicialController {
         MateriaisController mc = new MateriaisController(frame);
         if (mc.getMateriais() != null) {
             materiais = mc.getMateriais();
-            // apenas verificaçoes de funcionamento do code
-            System.out.println("Def: " + materiais.getConcrete().getDeformacaoE0() + " eu: " + materiais.getConcrete().getDeformacaoEu());
-
-            System.out.println("fcd: " + materiais.getConcrete().getFcd());
-
-            System.out.println("SigmaCD: " + materiais.getConcrete().getSigmacd());
-            System.out.println("Concreto fck: " + materiais.getConcrete().getFck() + ", " + "Aço: " + materiais.getAco().getTypeAco() + "Ecs: " + materiais.getConcrete().getModuloElasticidade());
         }
 
     }
@@ -125,9 +110,6 @@ public class telaInicialController {
             this.materiais.getAco().setDefAco(CVC.getEuAco());
             this.esforcosCalculo = new Esforcos((float) (esforcos.getMxk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getMyk() * materiais.getCoef().getGamaEsforcos()), (float) (esforcos.getNk() * materiais.getCoef().getGamaEsforcos()));
 
-            System.out.println("Fyd: " + materiais.getAco().getFyd());
-            // testando code
-            System.out.println("SigmaCD : " + materiais.getConcrete().getSigmacd());
         } else if (this.materiais == null && this.esforcos == null) {
             JOptionPane.showMessageDialog(frame, "Lance os esforços e os materiais da seção!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 

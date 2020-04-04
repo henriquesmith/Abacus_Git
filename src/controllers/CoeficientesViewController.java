@@ -30,7 +30,6 @@ public class CoeficientesViewController {
         this.parent = parent;
         this.materiais = materiais;
         view = new CoeficientesView();
-        System.out.println("FCk analisado: "+ materiais.getConcrete().getFck());
         init();
     }
 

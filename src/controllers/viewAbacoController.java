@@ -12,13 +12,13 @@ import entites.secaoTransversal;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GridBagLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -34,7 +34,7 @@ import views.progressDialog;
  *
  * @author Administrador
  */
-public class viewAbacoController implements PropertyChangeListener, progressDialogListener {
+public class viewAbacoController implements progressDialogListener {
 
     private List<Float> Mx;
     private List<Float> My;
@@ -49,6 +49,7 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
     miniSecao ms;
     private SwingWorker<Map<Float, List<Esforcos>>, Integer> worker;
     private SwingWorker<List<Esforcos>, Integer> worker2;
+    private SwingWorker<List<Float>, Integer> worker3;
 
     public viewAbacoController(JFrame parent, secaoTransversal sec, Esforcos esforcos, Materials mat) {
         this.parent = parent;
@@ -90,10 +91,14 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
-        frame.setLocationRelativeTo(parent);
+        frame.setLocationRelativeTo(null);
     }
 
-    private void FCN() {
+    private synchronized void FCN() {
+        worker3 = null;
+        worker2 = null;
+        worker = null;
+        pd.getProgressBar().setIndeterminate(false);
         view.getJPanelN_X().removeAll();
         view.getJPanelN_X().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
@@ -137,6 +142,7 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
 
                         pd.setVisible(false);
                         if (isCancelled() == true) {
+                            pd.setVisible(false);
                             return;
                         }
 
@@ -147,7 +153,7 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
                             graf.setPlot(.8);
 
                             graf.setSeriesMap(mo, ac, hx, hy, sigma, tetaD);
-                            graf.addSecao(ms.setarImagem(), 350, 40, true);
+                            graf.addSecao(ms.setarImagem(), 360, 400, true);
                             graf.setGrid(false);
                             graf.setCL(1);
 
@@ -155,7 +161,7 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
 
                             pd.setVisible(false);
                         } catch (InterruptedException | ExecutionException ex) {
-
+                            worker.cancel(true);
                         }
                     }
 
@@ -180,15 +186,15 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
                         } else {
                             JOptionPane.showMessageDialog(frame, "Selecione o angulo desejado!", "Importante", JOptionPane.INFORMATION_MESSAGE);
                         }
-                        System.out.println("");
-                        System.out.println("angulo: " + alfa + " angulo2: " + alfa2);
-
+                     //   System.out.println("");
+                       // System.out.println("angulo: " + alfa + " angulo2: " + alfa2);
+                        Thread.sleep(500);
                         for (float w = w1; w <= w2; w = (w + deltaw)) {
                             if (isCancelled()) {
                                 break;
                             }
-                            System.out.println(" ");
-                            System.out.println("w avaliado: " + w);
+                           // System.out.println(" ");
+                          //  System.out.println("w avaliado: " + w);
                             float As = (((w * ac * sigma) / fyd) * 100);
                             List< Esforcos> es;
                             es = ln.env_FCN(As, alfa, alfa2);
@@ -224,60 +230,71 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
         cl.show(view.getJPGraficos(), "abaco");
     }
 
-    // arrumar method
-    private void FC_N_ENV_X() {
-        float area = this.sec.getArea();
-        float hx = this.sec.getHx();
-        float hy = this.sec.getH();
-        float sigma = this.mat.getConcrete().getSigmacd() / 10;
-        CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
-        cl.show(view.getJPGraficos(), "nx");
-        grafico graf = new grafico();
-        List<Float> mx = new ArrayList<>();
-        List<Float> my = new ArrayList<>();
-        List<Float> N = new ArrayList<>();
+    private synchronized void gerarInclinacao() {
+        worker3 = null;
+        worker2 = null;
+        worker = null;
+        pd.setValue(30);
         NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
+        List<Float> parametros = new ArrayList<>();
+        pd.getProgressBar().setIndeterminate(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                pd.setVisible(true);
+            }
 
-        List<Esforcos> mo = new ArrayList<>();
-        float a = -2;
-        while (a <= 2) {
-            System.out.println(" ");
-            System.out.println("valor avaliado: " + a);
-            float n = a * (this.sec.getArea()) * (this.mat.getConcrete().getSigmacd() / 10);
-            float xLN = ln.bissecant(0, 1000, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars(), n, (float) 0.002);
-            Esforcos e = ln.moments(xLN, (float) (this.esforcos.getTetaD() - 90), this.sec.getBars().getAreaBars());
-            Esforcos es = new Esforcos(e.getMxk(), e.getMyk(), e.getNk());
-            mo.add(e);
-            mo.add(es);
-            a = (float) (a + 0.1);
+        });
+        worker3 = new SwingWorker<List<Float>, Integer>() {
+            @Override
+            protected void done() {
+                List<Float> par;
+                if (isCancelled()) {
+                    pd.setVisible(false);
+                    return;
+                }
+                try {
 
-        }
-        for (Esforcos e : mo) {
-            float x = e.getMxk();
-            float y = e.getMyk();
-            float nx = e.getNk();
-            x = ((x * 100) / (area * hx * sigma));
-            y = ((y * 100) / (area * hy * sigma));
-            nx = ((nx) / (area * sigma));
-            mx.add(x);
-            my.add(y);
-            N.add(nx);
-        }
+                    par = get();
+                    view.getTxtInclinacao().setText(String.format("%.2f", par.get(0)));
+                    view.getTxtProfundidade().setText(String.format("%.2f", par.get(1)));
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    pd.setVisible(false);
 
-        view.getJPanelN_X().add(graf.grafico("v", "ux", "Teste FCO"));
-        graf.setSeries(N, my, 10f);
+                } catch (InterruptedException | ExecutionException ex) {
+                    Logger.getLogger(viewAbacoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            protected void process(List<Integer> cont) {
+
+            }
+
+            @Override
+            protected List<Float> doInBackground() throws Exception {
+                if (isCancelled()) {
+                    return null;
+                } else {
+                    float inc = ln.inclinacaoLN((float) (esforcos.getTetaD() - 90), esforcos.getNk(), sec.getBars().getAreaBars(), esforcos, (float) 0.001);
+                    float xLN = ln.bissecant(0, 1000, inc, sec.getBars().getAreaBars(), esforcos.getNk(), (float) 0.001);
+                    parametros.add(inc);
+                    parametros.add(xLN);
+                    publish(0);
+
+                }
+                return parametros;
+            }
+        };
+        worker3.execute();
 
     }
 
-    private void gerarInclinacao() {
-        NeutralLine ln = new NeutralLine(this.frame, this.sec, this.esforcos, this.mat);
-        float inc = ln.inclinacaoLN((float) (this.esforcos.getTetaD() - 90), this.esforcos.getNk(), this.sec.getBars().getAreaBars(), this.esforcos, (float) 0.001);
-        float xLN = ln.bissecant(0, 1000, inc, this.sec.getBars().getAreaBars(), this.esforcos.getNk(), (float) 0.001);
-        view.getTxtInclinacao().setText(String.format("%.2f", inc));
-        view.getTxtProfundidade().setText(String.format("%.2f", xLN));
-    }
-
-    private void gerarAbaco() {
+    private synchronized void gerarAbaco() {
+        worker3 = null;
+        worker2 = null;
+        worker = null;
+        pd.getProgressBar().setIndeterminate(false);
         view.getJPanelABACO().removeAll();
         view.getJPanelABACO().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
@@ -312,15 +329,16 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
                 grafico graf = new grafico();
                 pd.setVisible(false);
                 if (isCancelled()) {
+                    pd.setVisible(false);
                     return;
                 }
                 try {
                     Map<Float, List<Esforcos>> mo = get();
-                    System.out.println("Size: " + mo.size());
-                    view.getJPanelABACO().add(graf.grafico("μx", "μy", "AÇO " + mat.getAco().getTypeAco().toString() + "        ν= " + view.getTxtVarV().getText()));
-                    graf.setPlot(.70);
+                   // System.out.println("Size: " + mo.size());
+                    view.getJPanelABACO().add(graf.grafico("μx", "μy", mat.getAco().getTypeAco().toString() + "          ν= " + view.getTxtVarV().getText()));
+                    graf.setPlot(.8);
                     graf.setSeriesMap(mo, ac, hx, hy, sigma, 45);
-                    graf.addSecao(ms.setarImagem(), 350, 40, true);
+                    graf.addSecao(ms.setarImagem(), 40, 370, true);
                     graf.setGrid(false);
                     graf.setCL(1);
                     pd.setValue(100);
@@ -328,7 +346,7 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
                     pd.setVisible(false);
 
                 } catch (InterruptedException | ExecutionException ex) {
-
+                    worker.cancel(true);
                 }
             }
 
@@ -339,11 +357,12 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
             }
 
             @Override
-            protected Map<Float, List<Esforcos>> doInBackground() throws Exception {
+            protected Map<Float, List<Esforcos>> doInBackground() throws InterruptedException {
                 float count = (100 / (w2));
                 float p;
                 Map<Float, List<Esforcos>> mom = new HashMap<Float, List<Esforcos>>();
                 float w = w1;
+                Thread.sleep(500);
                 while (w <= w2) {
                     if (isCancelled()) {
                         break;
@@ -365,7 +384,11 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
         worker.execute();
     } //metodo que gera a envoltória de momentos da seçao idealizada
 
-    private void gerarEnvoltoria() {
+    private synchronized void gerarEnvoltoria() {
+        worker3 = null;
+        worker2 = null;
+        worker = null;
+        pd.getProgressBar().setIndeterminate(false);
         view.getJPEenvoltoria().removeAll();
         view.getJPEenvoltoria().revalidate();
         CardLayout cl = (CardLayout) view.getJPGraficos().getLayout();
@@ -403,10 +426,10 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
                     graf.setPlot(0.8);
                     graf.setGrid(true);
                     graf.setSeries(mx, my, taxaSec);
-                    graf.addSecao(ms.setarImagem(), 350, 40, true);
+                    graf.addSecao(ms.setarImagem(), 40, 370, true);
                     graf.setGrid(false);
                 } catch (InterruptedException | ExecutionException ex) {
-
+                    worker2.cancel(true);
                 }
                 pd.setVisible(false);
 
@@ -419,9 +442,10 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
             }
 
             @Override
-            protected List<Esforcos> doInBackground() throws Exception {
+            protected List<Esforcos> doInBackground() throws InterruptedException {
                 List<Esforcos> mom = new ArrayList<>();
                 int count = 0;
+                Thread.sleep(500);
                 for (float i = 0; i <= 360; i++) {
                     if (isCancelled()) {
                         break;
@@ -498,14 +522,6 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
         return mat;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress".equals(evt.getPropertyName())) {
-            int progress = (Integer) evt.getNewValue();
-            pd.setValue(progress);
-        }
-    }
-
     /**
      * @return the Uxs
      */
@@ -522,11 +538,15 @@ public class viewAbacoController implements PropertyChangeListener, progressDial
 
     @Override
     public void ProgressBarcanceled() {
-        if (worker != null) {
+        if (worker != null && worker2 == null && worker3 == null && worker.isCancelled() == false) {
             worker.cancel(true);
+
         }
-        if (worker2 != null) {
+        if (worker2 != null && worker3 == null && worker2 == null && worker2.isCancelled() == false) {
             worker2.cancel(true);
+        }
+        if (worker3 != null && worker2 == null && worker == null && worker3.isCancelled() == false) {
+            worker3.cancel(true);
         }
     }
 }
