@@ -28,7 +28,6 @@ public class telaInicialController {
     private secaoTransversal secaoTransversal;
     private Esforcos esforcos;
     private Esforcos esforcosCalculo;
-    // private Barras barras;
 
     public telaInicialController(JFrame parent) {
         this.parent = parent;
@@ -47,7 +46,7 @@ public class telaInicialController {
         frame.add(tela);
         frame.pack();
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(frame.getClass().getResource("/icons/Icone.png")));
-        frame.setLocationRelativeTo(parent);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
 
@@ -98,7 +97,6 @@ public class telaInicialController {
 
     }
 
-    // terminar o code implemetation
     private void lancarCoeficientes() {
         if (this.materiais != null && this.esforcos != null) {
             CoeficientesViewController CVC = new CoeficientesViewController(frame, materiais);

@@ -20,6 +20,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JPanel;
 import jdk.nashorn.internal.objects.Global;
 
@@ -40,6 +41,7 @@ public final class miniSecao extends JPanel {
     private Image im;
 
     public miniSecao(secaoTransversal sec) {
+        this.setLocale(Locale.ENGLISH);
         this.sec = sec;
         this.vertices = sec.getVertices();
         this.bars = sec.getBars().getBarras();
@@ -52,7 +54,7 @@ public final class miniSecao extends JPanel {
     }
 
     private void parametrosgeom() {
-        tal = String.format("%.2f", (sec.getH() - sec.getD()) / (sec.getH()));
+        tal = String.format(Locale.ENGLISH,"%.2f", (sec.getH() - sec.getD()) / (sec.getH()));
 
     }
 
@@ -84,6 +86,12 @@ public final class miniSecao extends JPanel {
     public Dimension getPreferredSize() {
 
         return new Dimension(125, 125);
+    }
+    public void drawLN(Graphics g, float alfa){
+        Graphics2D g2 = (Graphics2D) g;
+        g2.rotate(alfa);
+        g2.draw(new Line2D.Float(0,0,30,30));
+        
     }
 
     private void drawLines(Graphics g) {
@@ -132,6 +140,7 @@ public final class miniSecao extends JPanel {
         for (barra b : bars) {
             drawPoint(g2, b.getX(), b.getY());
         }
+       // drawLN(g,45);
 
     }
 
@@ -154,6 +163,7 @@ public final class miniSecao extends JPanel {
             drawPoint(gd2, b.getX(), b.getY());
         }
         gd2.setFont(new Font("Tahoma", Font.BOLD, 10));
+        this.setLocale(Locale.ENGLISH);
         gd2.drawString("δ = " + tal, vertices.get(0).getX() -15, vertices.get(0).getY() + 10);
         gd2.dispose();
         

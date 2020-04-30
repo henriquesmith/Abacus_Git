@@ -9,6 +9,7 @@ import entites.Esforcos;
 import java.awt.Dialog;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -55,7 +56,7 @@ public class LancaEsforcosController {
                 }
             }
         });
-        parent.setVisible(false);
+        parent.setVisible(true);
         frame.setVisible(true);
     }
 
@@ -67,8 +68,8 @@ public class LancaEsforcosController {
             nk = Float.parseFloat(view.getTxtNk().getText());
             ex = (mx / nk) * 100;
             ey = (my / nk) * 100;
-            view.getTxtEx().setText(String.format("%.2f", ex));
-            view.getTxtEy().setText(String.format("%.2f", ey));
+            view.getTxtEx().setText(String.format(Locale.ENGLISH,"%.2f", ex));
+            view.getTxtEy().setText(String.format(Locale.ENGLISH,"%.2f", ey));
             if (JOptionPane.showConfirmDialog(frame, view.getJPanelE()) == JOptionPane.OK_OPTION) {
                 esforcos = new Esforcos(mx, my, nk);
                 frame.setVisible(false);

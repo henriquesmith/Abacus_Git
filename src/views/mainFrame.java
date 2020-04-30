@@ -68,6 +68,7 @@ public class mainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setForeground(new java.awt.Color(60, 63, 65));
         setIconImage(Toolkit.getDefaultToolkit().getImage((this.getClass().getClassLoader().getResource("icons/Icone.png"))));
+        setResizable(false);
         setSize(new java.awt.Dimension(400, 300));
 
         jLabel1.setBackground(new java.awt.Color(65, 63, 65));
@@ -157,14 +158,14 @@ public class mainFrame extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(65, 63, 65));
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
-        jScrollPane2.setMinimumSize(new java.awt.Dimension(300, 190));
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(310, 200));
         jScrollPane2.setName(""); // NOI18N
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(300, 190));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(310, 200));
 
         jTextArea2.setEditable(false);
         jTextArea2.setColumns(1);
         jTextArea2.setRows(5);
-        jTextArea2.setText("  Software: \n  Versao: 1.0.\n  Software restritamente de cunho educacional, sendo a\nvenda e cormercializção do mesmo restritamente proibi-\n-da. \nUso:\n  Não nos responsabilizamos pelo mal uso do software\ntendo em vista que: Os dados gerados por ele depen-\n-dem diretamente dos parametros passados pelo usu-\n-ário. Portanto, recomenda-se que verifique perante a\nNBR 6118:2014 a coerência dos parametros informados\ncomo, por exemplo, taxa de armadura mínima e índice \nde esbeltez.\n\n\n\n\n");
+        jTextArea2.setText("  Software: \n  Versao: 1.0.\n  Software restritamente de cunho educacional, sendo a\nvenda e cormercialização do mesmo restritamente proibi-\n-da. \nUso:\n  Não nos responsabilizamos pelo mal uso do software\ntendo em vista que: Os dados gerados por ele depen-\n-dem diretamente dos parametros passados pelo usu-\n-ário. Portanto, recomenda-se que verifique perante a\nNBR 6118:2014 a coerência dos parametros informados\ncomo, por exemplo, taxa de armadura mínima e índice \nde esbeltez.\n\n\n\n\n");
         jTextArea2.setMinimumSize(new java.awt.Dimension(320, 250));
         jTextArea2.setName(""); // NOI18N
         jTextArea2.setPreferredSize(new java.awt.Dimension(320, 250));

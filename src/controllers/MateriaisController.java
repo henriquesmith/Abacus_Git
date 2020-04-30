@@ -12,6 +12,7 @@ import entites.tipoAco;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import views.Materiais;
@@ -61,7 +62,7 @@ public class MateriaisController {
         if (view.getTxtFck().getText().isEmpty() == false) {
             float fck = Float.parseFloat(view.getTxtFck().getText());
             concreto = new Concreto(fck);
-            view.getTxtEcs().setText(String.format("%.2f", concreto.getModuloElasticidade()));
+            view.getTxtEcs().setText(String.format(Locale.ENGLISH,"%.2f", concreto.getModuloElasticidade()));
 
         }
     }
@@ -94,7 +95,7 @@ public class MateriaisController {
         if (e.getStateChange() == ItemEvent.SELECTED) {
             acoType = (tipoAco) e.getItem();
             if (acoType.getTipoAco() != 0) {
-                view.getTxtFyk().setText(String.format("%.2f", acoType.getTipoAco()));
+                view.getTxtFyk().setText(String.format(Locale.ENGLISH,"%.2f", acoType.getTipoAco()));
             } else {
 
                 view.getTxtFyk().setText("");

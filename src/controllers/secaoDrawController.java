@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -43,6 +44,7 @@ public class secaoDrawController {
         this.parent = parent;
         secView = new secaoDraw();
         draw = new areaDesenho();
+        secView.setLocale(Locale.ENGLISH);
         init();
     }
 
@@ -101,7 +103,7 @@ public class secaoDrawController {
             }
         });
 
-        parent.setVisible(false);
+        parent.setVisible(true);
         frame.setVisible(true);
 
     }
@@ -115,11 +117,11 @@ public class secaoDrawController {
             sec.addVertice(v);
             if (sec.getCentroide() != null) {
                 draw.setCentroide(sec.getCentroide());
-                secView.getTxtCentroide().setText("[" + String.format("%.2f", sec.getCentroide().getX()) + ";" + String.format("%.2f", sec.getCentroide().getY()) + "]");
+                secView.getTxtCentroide().setText("[" + String.format(Locale.ENGLISH,"%.2f", sec.getCentroide().getX()) + ";" + String.format(Locale.ENGLISH,"%.2f", sec.getCentroide().getY()) + "]");
             }
             if (sec.getArea() >= 0) {
 
-                secView.getTxtArea().setText(String.format("%.2f", sec.getArea()));
+                secView.getTxtArea().setText((String.format(Locale.ENGLISH,"%.2f", sec.getArea())));
             }
             draw.updateVerticeList(sec.getVertices());
             if (draw.getCentro() != null) {
@@ -142,7 +144,7 @@ public class secaoDrawController {
                 secView.getScrollPaneDraw().getViewport().setViewPosition(new Point((int) (draw.getSize().getWidth() / 3), (int) (draw.getSize().getHeight() / 3)));
             }
         } else {
-            JOptionPane.showMessageDialog(frame, "Zoom máximo: " + (String.format("%.2f", (draw.getZoom() - 2) * 100)) + "%", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Zoom máximo: " + (String.format(Locale.ENGLISH,"%.2f", (draw.getZoom() - 2) * 100)) + "%", "Aviso", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -172,7 +174,7 @@ public class secaoDrawController {
             }
             if (sec.getArea() != 0) {
                 if (sec.getVertices().size() > 2) {
-                    secView.getTxtArea().setText(String.format("%.2f", sec.getArea()));
+                    secView.getTxtArea().setText(String.format(Locale.ENGLISH,"%.2f", sec.getArea()));
                 } else {
                     secView.getTxtArea().setText("0.0");
                 }
@@ -181,7 +183,7 @@ public class secaoDrawController {
             if (sec.getCentroide() != null) {
                 if (sec.getVertices().size() > 2) {
                     draw.setCentroide(sec.getCentroide());
-                    secView.getTxtCentroide().setText("[" + String.format("%.2f", sec.getCentroide().getX()) + ";" + String.format("%.2f", sec.getCentroide().getY()) + "]");
+                    secView.getTxtCentroide().setText("[" + String.format(Locale.ENGLISH,"%.2f", sec.getCentroide().getX()) + ";" + String.format(Locale.ENGLISH,"%.2f", sec.getCentroide().getY()) + "]");
                 } else {
                     secView.getTxtCentroide().setText("[0;0]");
 

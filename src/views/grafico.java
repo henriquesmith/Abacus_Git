@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import org.knowm.xchart.XChartPanel;
@@ -60,7 +61,7 @@ public class grafico {
         panel.setBackground(Color.white);
         zm = new SelectionZoom();
         zm.init(getPanel());
-        
+        panel.setLocale(Locale.ENGLISH);       
         
         getPanel().setExportAsString("Exportar");
         getPanel().setPrintString("Exportar para PDF");
@@ -112,7 +113,7 @@ public class grafico {
     }
 
     public void setPoint(List<Float> Mx, List<Float> My) {
-        serie = chart.addSeries("Esforcos solicitantes", My, My);
+        serie = chart.addSeries("Solicitante", Mx, My);
         getSerie().setMarkerColor(Color.RED);
         getSerie().setMarker(SeriesMarkers.DIAMOND);
         getSerie().setLineStyle(SeriesLines.NONE);
@@ -140,25 +141,25 @@ public class grafico {
             }
 
             if (tetaD != 90 && tetaD != 0) {
-                serie = chart.addSeries("ω = " + String.format("%.2f", k), Mx, My);
+                serie = chart.addSeries("ω = " + String.format(Locale.ENGLISH,"%.2f", k), Mx, My);
                 chart.setXAxisTitle("μx");
                 chart.setYAxisTitle("μy");
                 
             }
             if (tetaD == 90) {
-                serie = chart.addSeries("ω = " + String.format("%.2f", k), N, My);
+                serie = chart.addSeries("ω = " + String.format(Locale.ENGLISH,"%.2f", k), N, My);
                 chart.setXAxisTitle("v");
                 chart.setYAxisTitle("μ");
             }
             if (tetaD == 0) {
-                serie = chart.addSeries("ω = " + String.format("%.2f", k), N, Mx);
+                serie = chart.addSeries("ω = " + String.format(Locale.ENGLISH,"%.2f", k), N, Mx);
                 chart.setXAxisTitle("v");
                 chart.setYAxisTitle("μ");
             }
             getSerie().setMarker(SeriesMarkers.NONE);
             getSerie().setLineStyle(SeriesLines.SOLID);
             getSerie().setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
-            getSerie().setLabel("ω = " + String.format("%.2f", k));
+            getSerie().setLabel("ω = " + String.format(Locale.ENGLISH,"%.2f", k));
 
 
         }
@@ -168,11 +169,11 @@ public class grafico {
 
     public void setSeries(List<Float> Mx, List<Float> My, Float taxa) {
 
-        serie = chart.addSeries("ω = " + String.format("%.2f", taxa), Mx, My);
+        serie = chart.addSeries("ω = " + String.format(Locale.ENGLISH,"%.2f", taxa), Mx, My);
         getSerie().setMarker(SeriesMarkers.NONE);
         getSerie().setLineStyle(SeriesLines.SOLID);
         getSerie().setXYSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Line);
-        getSerie().setLabel("ω = " + String.format("%.2f", taxa));
+        getSerie().setLabel("ω = " + String.format(Locale.ENGLISH,"%.2f", taxa));
         getPanel().revalidate();
         getPanel().repaint();
 

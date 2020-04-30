@@ -76,6 +76,7 @@ public class telaInicial extends javax.swing.JPanel {
         setVerifyInputWhenFocusTarget(false);
         setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setOpaque(false);
         jPanel1.setPreferredSize(new java.awt.Dimension(10, 400));
 
@@ -92,6 +93,7 @@ public class telaInicial extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.LINE_END);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setOpaque(false);
         jPanel3.setPreferredSize(new java.awt.Dimension(10, 400));
 
@@ -108,6 +110,7 @@ public class telaInicial extends javax.swing.JPanel {
 
         add(jPanel3, java.awt.BorderLayout.LINE_START);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setOpaque(false);
         jPanel4.setPreferredSize(new java.awt.Dimension(400, 10));
 
@@ -124,6 +127,7 @@ public class telaInicial extends javax.swing.JPanel {
 
         add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.GridBagLayout());
 

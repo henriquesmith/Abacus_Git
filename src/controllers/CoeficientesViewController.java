@@ -8,6 +8,7 @@ package controllers;
 import entites.Coeficientes;
 import entites.Materials;
 import java.awt.Dialog;
+import java.util.Locale;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -70,12 +71,12 @@ public class CoeficientesViewController {
             //this.coeficientes = new Coeficientes(materiais,(double)this.gamaC,(double) this.gamaF,(double) this.gamaEsforcos);
             this.materiais.getConcrete().setFcd((float) this.gamaC);
             this.materiais.getConcrete().setSigmaCD();
-            view.getTxtLambda().setText(String.format("%.2f", materiais.getConcrete().getLambda()));
-            view.getTxtalfa().setText(String.format("%.2f", materiais.getConcrete().getAlfac()));
-            view.getTxtFcd().setText(String.format("%.2f", materiais.getConcrete().getFcd()));
-            view.getTxtSigmaCd().setText(String.format("%.2f", materiais.getConcrete().getSigmacd()));
-            view.getTxtE0().setText(String.format("%.2f", materiais.getConcrete().getDeformacaoE0()));
-            view.getTxtEu().setText(String.format("%.2f", materiais.getConcrete().getDeformacaoEu()));
+            view.getTxtLambda().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getLambda()));
+            view.getTxtalfa().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getAlfac()));
+            view.getTxtFcd().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getFcd()));
+            view.getTxtSigmaCd().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getSigmacd()));
+            view.getTxtE0().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getDeformacaoE0()));
+            view.getTxtEu().setText(String.format(Locale.ENGLISH,"%.2f", materiais.getConcrete().getDeformacaoEu()));
             view.getJTPane().setEnabledAt(1, true);
             view.getJTPane().setSelectedIndex(1);
         }

@@ -88,7 +88,7 @@ public class LancaEsforcos extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
 
         JPanelE.setBackground(new java.awt.Color(255, 255, 255));
-        JPanelE.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Excêntricidades ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 12))); // NOI18N
+        JPanelE.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Excentricidades ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 12))); // NOI18N
         JPanelE.setPreferredSize(new java.awt.Dimension(240, 50));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N

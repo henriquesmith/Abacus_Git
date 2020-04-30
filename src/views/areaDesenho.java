@@ -32,7 +32,6 @@ public class areaDesenho extends javax.swing.JPanel {
     private double zoom = 2;
 
     public areaDesenho() {
-
         setBackground(new Color(187, 187, 187));
     }
 
@@ -46,8 +45,6 @@ public class areaDesenho extends javax.swing.JPanel {
 
     public void Zoom(double s) {
         this.zoom += s * 0.1;
-        System.out.println("z: " + getZoom());
-
         revalidate();
         repaint();
     }
@@ -114,7 +111,6 @@ public class areaDesenho extends javax.swing.JPanel {
         if (v.size() > 1) {
             updateCentro();
         }
-
         repaint();
         validate();
     }
@@ -174,20 +170,15 @@ public class areaDesenho extends javax.swing.JPanel {
                 drawPoint(g, b.getX(), b.getY());
             }
         }
-
         validate();
 
     }
 
     private void drawOrigem(Graphics g) {
-
-        //  g.setColor(Color.black);
-        //g.drawRect(0 - 2, 0 - 2, 4, 4);
         g.setColor(Color.green);
         g.drawLine(0, 0, 0, -5);
         g.setColor(Color.red);
         g.drawLine(0, 0, 5, 0);
-
         g.setFont(new Font("Arial", 1, 6));
         g.setColor(Color.black);
         g.drawString("(0;0)", 0, 10);

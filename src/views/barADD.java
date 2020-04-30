@@ -75,7 +75,7 @@ public class barADD extends javax.swing.JPanel {
         add(jLabel4, gridBagConstraints);
 
         JComboDiametro.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        JComboDiametro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5.0", "6.3", "8.0", "10.0", "12.5", "16.0", "20.0", "22.5", "25.0", "32.0" }));
+        JComboDiametro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10.0", "12.5", "16.0", "20.0", "22.5", "25.0", "32.0" }));
         JComboDiametro.setSelectedIndex(-1);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;

@@ -138,7 +138,7 @@ public class CoeficientesView extends javax.swing.JPanel {
         jPanel1.add(txtgamaC, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        jLabel2.setText("γf: ");
+        jLabel2.setText("γs: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -246,7 +246,7 @@ public class CoeficientesView extends javax.swing.JPanel {
         jPanel2.add(txtEuAco, gridBagConstraints);
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        jLabel8.setText("εuAco (‰): ");
+        jLabel8.setText("εsu (‰): ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -255,7 +255,7 @@ public class CoeficientesView extends javax.swing.JPanel {
         jPanel2.add(jLabel8, gridBagConstraints);
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        jLabel9.setText("ε0 (‰): ");
+        jLabel9.setText("εc2 (‰): ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -274,7 +274,7 @@ public class CoeficientesView extends javax.swing.JPanel {
         jPanel2.add(txtE0, gridBagConstraints);
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        jLabel10.setText("εu (‰): ");
+        jLabel10.setText("εcu (‰): ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
